@@ -9,6 +9,9 @@ lerna-debug.log*
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
+# ignore the specific packages versions installed by the developper
+package-lock.json
+
 # Runtime data
 pids
 *.pid
