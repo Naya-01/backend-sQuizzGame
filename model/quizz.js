@@ -1,49 +1,36 @@
 const { parse, serialize } = require("../utils/json");
 var escape = require("escape-html");
+const db = require('../db')
 
-const jsonDbPath = __dirname + "/../data/quizz.json";
-
-//TODO : Ajouter quizz de départ
-const defaultQuizz = [];
 
 class Quizz {
-    constructor(dbPath = jsonDbPath, defaultItems = defaultQuizz ){
-        this.jsonDbPath = dbPath;
-        this.defaultQuizz = defaultItems
-    }
-    /**
-   * Returns the quizz identified by id
-   * @param {number} id - id of the quizz we want or -1 if it doesn't exist
-     */
-    getOneQuizz(id) {
-        const allQuizz = parse(this.jsonDbPath, this.defaultQuizz);
-        const i = quizz.findIndex((quizz) => quizz.id == id);
-        if(i < 0) return -1;
-        return allQuizz[i];
+    async getQuizzById(id, res) {
+        await db.query('SELECT q.* FROM quizz q WHERE q.id_quizz = '+id, (err, result) => {
+            if (err) {
+                return err
+            }
+            res.send(result.rows);
+        })
     }
 
-    /**
-     * Returns all quizz
-     * @returns {Array} Array of Quizz
-     */
-    getAllQuizz(){
-        const allQuizz = parse(this.jsonDbPath, this.defaultQuizz);
-        return allQuizz;
+    async getAllQuizz(res){
+        await db.query('SELECT * FROM quizz', (err, result) => {
+            if (err) {
+                return err
+            }
+            res.send(result.rows);
+        })
     }
 
-    addOne(body){
-        const allQuizz = parse(this.jsonDbPath, this.defaultQuizz);
-        const newQuizz = { // a modifier
-            id = allQuizz.length,
-            name = escape(body.name),
-            questions = body.questions,
-            scores = body.scores,
-        };
-        allQuizz.push(newQuizz);
-        serialize(this.jsonDbPath, allQuizz);
-        return newQuizz;
+    // TODO : a tester quand la db sera peuplée
+    async get5MoreLikedQuizz(res){
+        await db.query('SELECT q.* FROM quizz q WHERE q.id_quizz IN (SELECT l.id_quizz FROM likes l GROUP BY l.id_quizz ORDER BY count(l.id_quizz) LIMIT 5) ', (err, result) => {
+            if (err) {
+                return err
+            }
+            res.send(result.rows);
+        })
     }
-
-
-
+    
 }
+module.exports = { Quizz };
