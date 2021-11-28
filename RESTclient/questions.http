@@ -1,0 +1,17 @@
+### View question by id
+GET http://localhost:3000/questions/20
+
+### View all questions. Or the questions of a specific quizz
+GET http://localhost:3000/questions?quizz=1
+
+### Add a question
+POST http://localhost:3000/questions/
+Content-Type: application/json
+
+{
+    "id_quizz": 1,
+    "question": "J'aime les pommes?"
+}
+
+### Delete a question
+DELETE http://localhost:3000/questions?quizz=1&question=35
