@@ -41,4 +41,19 @@ router.delete("/", async function (req, res) {
   res.send(question);
 });
 
+// PUT /films/{id} : update a film identified by its id
+router.put("/:id", async function (req, res) {
+  // Send an error code '400 Bad request' if the body parameters are not valid
+  if (
+    !req.body ||
+    !req.body.question
+  )
+    return res.status(400).end();
+
+  const question = await questionModel.updateOne(req.params.id, req.body);
+  // Send an error code 'Not Found' if the film was not found :
+  if (!question) return res.sendStatus(404);
+  res.send(question);
+});
+
 module.exports = router;

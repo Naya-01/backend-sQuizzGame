@@ -1,5 +1,5 @@
 ### View question by id
-GET http://localhost:3000/questions/20
+GET http://localhost:3000/questions/36
 
 ### View all questions. Or the questions of a specific quizz
 GET http://localhost:3000/questions?quizz=1
@@ -14,4 +14,12 @@ Content-Type: application/json
 }
 
 ### Delete a question
-DELETE http://localhost:3000/questions?quizz=1&question=35
+DELETE http://localhost:3000/questions?quizz=1&question=36
+
+### Update question
+PUT http://localhost:3000/questions/37
+Content-Type: application/json
+
+{
+    "question": "J omsdfmes?"
+}

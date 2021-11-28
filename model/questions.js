@@ -13,7 +13,7 @@ class Questions {
     async getAll(id_quizz) {
         if(id_quizz==undefined){
             const { rows } = await db.query('SELECT * FROM questions');
-            if(!rows) return;
+            if(!rows) return false;
             return rows;
         }
         else{
@@ -30,7 +30,7 @@ class Questions {
      */
     async getOne(id) {
         const { rows } = await db.query('SELECT * FROM questions WHERE id_question = $1', [id]);
-        if(!rows) return;
+        if(!rows) return false;
         return rows[0];
     }
 
@@ -75,25 +75,16 @@ class Questions {
      * @param {object} body - it contains all the data to be updated
      * @returns {object} the updated resource or undefined if the update operation failed
      */
-    updateOne(id, body) {
-        /* TO MODIDY--------------------------
-        const collection = parse(this.jsonDbPath, this.collection);
-        const foundIndex = collection.findIndex((item) => item.id == id);
-        if (foundIndex < 0) return;
-        // Escape all dangerous potential new chars
-        const updatedResource = { ...collection[foundIndex] };
-        for (const key in body) {
-            if (Object.hasOwnProperty.call(body, key)) {
-                const element = body[key];
-                updatedResource[key] = escape(element);
-            }
-        }
-        // replace the resource found at index : (or use splice)
-        collection[foundIndex] = updatedResource;
+    async updateOne(id, body) {
+        let question = await this.getOne(id);
+        if(!question) return false;
+        let req = 'UPDATE questions SET question=$1 WHERE id_question=$2;';
+        let data = [body.question, id];
+        await db.query(req,data);
+        question = await this.getOne(id);
+        return question;
+        
 
-        serialize(this.jsonDbPath, collection);
-        return updatedResource;
-        */
     }
 
 }
