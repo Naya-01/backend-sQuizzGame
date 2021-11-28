@@ -1,6 +1,7 @@
 "use script";
 const db = require('../db')
 const jwt = require("jsonwebtoken");
+const escape = require("escape-html");
 const jwtSecret = "theBestUserIsNotMe";
 const LIFETIME_JWT = 24 * 60 * 60 * 1000; //24h
 const bcrypt = require('bcrypt');
@@ -17,20 +18,37 @@ class User{
     }
 
     async addUser(body){
-        // if(await this.getUserByEmail(body.email)===body.email)
-        //     return console.log("the user already exists");
+        // if(await this.userExist(body.email)!==0){
+        //     console.log("the user already exists");
+        //     return;
+        // }
 
         const hashedPassword = await bcrypt.hash(body.password, saltRounds);
         console.log(body.name);
-        return db.query(`INSERT INTO users (name,email,password) VALUES('${body.name}','${body.email}','${hashedPassword}')`);
+        db.query(`INSERT INTO users (name,email,password) VALUES('${body.name}','${body.email}','${hashedPassword}')`);
+        let user= {
+            name: body.name,
+            email:body.email,
+            password:hashedPassword
+        };
+        return user;
     }
 
+
+    async userExist(email){
+        // let int=0;
+        // await db.query(`SELECT *  FROM users WHERE email='${email}'`, function(err, result) {
+        //     console.log(int);
+        //     int = result.rowCount;
+        //     console.log(int);
+        // });
+        // return int;
+    }
 
     async getUserByEmail(email){
         const {rows} = await db.query(`SELECT *  FROM users WHERE email='${email}'`);
         if(!rows) return;
         return rows[0];
-
     }
 
 
@@ -39,18 +57,13 @@ class User{
         if(!rows) return;
         return rows[0];
 
-        // db.query(`SELECT *  FROM users WHERE id_user='${id}'`,(err, result)=>{
-        //     if (!err) {
-        //         res.send(result.rows[0]);
-        //     }
-        // })
-
     }
 
-    async login(email,password){
-        const user = this.getUserByEmail(email);
+    async login(body){
+        const user = await this.getUserByEmail(body.email);
         if(!user) return;
-        const match = await bcrypt.compare(password, user.password);
+        const hashPass = await bcrypt.hash(body.password,saltRounds);
+        const match = await bcrypt.compare(body.password, user.password);
         if(!match) return;
 
         const authenticatedUser = {
@@ -67,11 +80,11 @@ class User{
     }
 
     async register(body){
-        const user = this.getUserByEmail(body.email);
+        const user = await this.getUserByEmail(body.email);
         if(user) return;
 
         const newUser = await this.addUser(body);
-
+        if(newUser===undefined)return;
         const authenticatedUser = {
             username: newUser.name,
             token: "noSoucis"

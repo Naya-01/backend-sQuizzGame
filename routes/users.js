@@ -21,15 +21,33 @@ router.get('/email/:email', async function(req, res, next) {
 
 
 router.post('/register', async function(req, res, next) {
-  if(
-      !req.body ||
-      (req.body.hasOwnProperty("name")&& req.body.name.length === 0) ||
-      (req.body.hasOwnProperty("email") && req.body.email.length === 0) ||
-      (req.body.hasOwnProperty("password")&& req.body.password.length === 0)
-  )
-    return res.status(400).end();
+    if(
+        !req.body ||
+        (req.body.hasOwnProperty("name")&& req.body.name.length === 0) ||
+        (req.body.hasOwnProperty("email") && req.body.email.length === 0) ||
+        (req.body.hasOwnProperty("password")&& req.body.password.length === 0)
+    )
+        return res.status(400).end();
 
-   await userModel.addUser(req.body);
+    const connexion = await userModel.register(req.body);
+    if(!connexion) return res.status(409).end();
+
+    return res.json(connexion);
+});
+
+
+router.post('/login', async function(req, res, next) {
+    if(
+        !req.body ||
+        (req.body.hasOwnProperty("email") && req.body.email.length === 0) ||
+        (req.body.hasOwnProperty("password")&& req.body.password.length === 0)
+    )
+        return res.status(400).end();
+
+    const connexion = await userModel.login(req.body);
+    if(!connexion) return res.status(409).end();
+
+    return res.json(connexion);
 });
 
 
