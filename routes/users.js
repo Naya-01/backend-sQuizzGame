@@ -11,6 +11,13 @@ router.get('/:id', async function(req, res, next) {
     res.send(result);
    //await userModel.getUserById(res, req.params.id);
 });
+/* GET users listing. */
+router.get('/email/:email', async function(req, res, next) {
+    const result =  await userModel.getUserByEmail(req.params.email);
+    if(!result) res.sendStatus(400).end();
+    res.send(result);
+    //await userModel.getUserById(res, req.params.id);
+});
 
 
 router.post('/register', async function(req, res, next) {
@@ -18,7 +25,7 @@ router.post('/register', async function(req, res, next) {
       !req.body ||
       (req.body.hasOwnProperty("name")&& req.body.name.length === 0) ||
       (req.body.hasOwnProperty("email") && req.body.email.length === 0) ||
-      (req.body.hasOwnProperty("password")&& req.body.name.length === 0)
+      (req.body.hasOwnProperty("password")&& req.body.password.length === 0)
   )
     return res.status(400).end();
 
