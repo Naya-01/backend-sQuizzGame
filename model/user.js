@@ -1,6 +1,8 @@
 "use script";
 const db = require('../db')
-//const jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
+const jwtSecret = "theBestUserIsNotMe";
+const LIFETIME_JWT = 24 * 60 * 60 * 1000; //24h
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -15,21 +17,19 @@ class User{
     }
 
     async addUser(body){
-        // if(!this.userExist(body.email))
-        //     return console.log("the user already exists");      DOESNT WORK
+        // if(await this.getUserByEmail(body.email)===body.email)
+        //     return console.log("the user already exists");
 
         const hashedPassword = await bcrypt.hash(body.password, saltRounds);
         console.log(body.name);
-        db.query(`INSERT INTO users (name,email,password) VALUES('${body.name}','${body.email}','${hashedPassword}')`);
+        return db.query(`INSERT INTO users (name,email,password) VALUES('${body.name}','${body.email}','${hashedPassword}')`);
     }
 
 
-      userExist(email){
-         // return await db.query(`SELECT name  FROM users WHERE email='${email}'`);
-         db.query(`SELECT *  FROM users WHERE email='${email}'`,(err, result)=>{
-             if(result.rowCount === 0) return false;
-         })
-          return true;
+    async getUserByEmail(email){
+        const {rows} = await db.query(`SELECT *  FROM users WHERE email='${email}'`);
+        if(!rows) return;
+        return rows[0];
 
     }
 
@@ -46,6 +46,46 @@ class User{
         // })
 
     }
+
+    async login(email,password){
+        const user = this.getUserByEmail(email);
+        if(!user) return;
+        const match = await bcrypt.compare(password, user.password);
+        if(!match) return;
+
+        const authenticatedUser = {
+            username: user.name,
+            token: "noSoucis"
+        };
+
+        authenticatedUser.token=jwt.sign(
+            {username: authenticatedUser.username}, jwtSecret, {expiresIn: LIFETIME_JWT}
+        );
+
+        return authenticatedUser;
+
+    }
+
+    async register(body){
+        const user = this.getUserByEmail(body.email);
+        if(user) return;
+
+        const newUser = await this.addUser(body);
+
+        const authenticatedUser = {
+            username: newUser.name,
+            token: "noSoucis"
+        };
+
+        authenticatedUser.token=jwt.sign(
+            {username: authenticatedUser.username}, jwtSecret, {expiresIn: LIFETIME_JWT}
+        );
+
+        return authenticatedUser;
+
+    }
+
+
 
 
 
