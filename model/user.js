@@ -18,11 +18,6 @@ class User{
     }
 
     async addUser(body){
-        // if(await this.userExist(body.email)!==0){
-        //     console.log("the user already exists");
-        //     return;
-        // }
-
         const hashedPassword = await bcrypt.hash(body.password, saltRounds);
         console.log(body.name);
         db.query(`INSERT INTO users (name,email,password) VALUES('${body.name}','${body.email}','${hashedPassword}')`);
@@ -34,23 +29,11 @@ class User{
         return user;
     }
 
-
-    async userExist(email){
-        // let int=0;
-        // await db.query(`SELECT *  FROM users WHERE email='${email}'`, function(err, result) {
-        //     console.log(int);
-        //     int = result.rowCount;
-        //     console.log(int);
-        // });
-        // return int;
-    }
-
     async getUserByEmail(email){
         const {rows} = await db.query(`SELECT *  FROM users WHERE email='${email}'`);
         if(!rows) return;
         return rows[0];
     }
-
 
     async getUserById(id){
         const {rows} = await db.query(`SELECT *  FROM users WHERE id_user='${id}'`);
@@ -81,7 +64,10 @@ class User{
 
     async register(body){
         const user = await this.getUserByEmail(body.email);
-        if(user) return;
+        if(user){
+            console.log("L'utilisateur existe déjà");
+            return;
+        }
 
         const newUser = await this.addUser(body);
         if(newUser===undefined)return;
