@@ -1,0 +1,13 @@
+///WEBSTORM
+
+### Create user
+POST http://localhost:3000/users/register
+Content-Type: application/json
+
+{
+  "name":"santrake",
+  "email": "plzasssse@gmail.com",
+  "password":"manager"
+}
+
+###
