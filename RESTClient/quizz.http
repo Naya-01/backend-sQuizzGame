@@ -1,0 +1,17 @@
+### See quizz most liked
+GET http://localhost:3000/quizz/mostliked
+
+### See all quizz
+GET http://localhost:3000/quizz
+
+### See all quizz of an user
+GET http://localhost:3000/quizz/forUser/1
+
+### Add a quizz
+POST http://localhost:3000/quizz/
+Content-Type: application/json
+
+{
+    "id_creator": 1,
+    "name": "Quizz Années 2000"
+}

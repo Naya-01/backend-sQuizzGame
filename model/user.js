@@ -52,11 +52,12 @@ class User{
 
         const authenticatedUser = {
             username: user.name,
+            email: user.email,
             token: "noSoucis"
         };
 
         authenticatedUser.token=jwt.sign(
-            {username: authenticatedUser.username}, jwtSecret, {expiresIn: LIFETIME_JWT}
+            {username: authenticatedUser.username, email: authenticatedUser.email}, jwtSecret, {expiresIn: LIFETIME_JWT}
         );
 
         return authenticatedUser;
@@ -74,15 +75,35 @@ class User{
         if(newUser===undefined)return;
         const authenticatedUser = {
             username: newUser.name,
+            email:newUser.email,
             token: "noSoucis"
         };
 
         authenticatedUser.token=jwt.sign(
-            {username: authenticatedUser.username}, jwtSecret, {expiresIn: LIFETIME_JWT}
+            {username: authenticatedUser.username, email: authenticatedUser.email}, jwtSecret, {expiresIn: LIFETIME_JWT}
         );
 
         return authenticatedUser;
 
+    }
+
+    async isBanned(id){
+        return await db.query(`SELECT banned FROM users WHERE id='${id}'`);
+    }
+
+    async isAdmin(id){
+        return await db.query(`SELECT is_admin FROM users WHERE id='${id}'`);
+    }
+
+    async banUser(id){
+        if(await this.isAdmin(id)) return console.log('cet utilisateur ne peut etre ban car il est admin')
+        if(await this.isBanned(id)) return console.log('cet utilisateur est deja ban');
+        await db.query(`UPDATE users SET banned = true WHERE id_user = '${id}'`);
+    }
+
+    async unbanUser(id){
+        if(!await this.isBanned(id)) return console.log('cet utilisateur n\'est pas ban');
+        await db.query(`UPDATE users SET banned = false WHERE id_user = '${id}'`);
     }
 
 
