@@ -17,3 +17,14 @@ Content-Type: application/json
   "email": "stefffffrefefzfzef@gmail.com",
   "password":"123"
 }
+
+
+### follow user
+
+POST http://localhost:3000/users/subscribe
+Content-Type: application/json
+
+{
+  "id_user": 1,
+  "id_follower": 2
+}

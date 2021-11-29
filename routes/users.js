@@ -50,5 +50,20 @@ router.post('/login', async function(req, res, next) {
     return res.json(connexion);
 });
 
+router.post('/subscribe', async function(req, res, next) {
+    if(
+        !req.body ||
+        (req.body.hasOwnProperty("id_user") && req.body.id_user.length === 0) ||
+        (req.body.hasOwnProperty("id_follower")&& req.body.id_follower.length === 0)
+    )
+        return res.status(400).end();
+
+    const connexion = await userModel.followUser(req.body.id_user,req.body.id_follower);
+    if(!connexion) return res.status(409).end();
+
+    return res.json(connexion);
+});
+
+
 
 module.exports = router;

@@ -106,6 +106,14 @@ class User{
         await db.query(`UPDATE users SET banned = false WHERE id_user = '${id}'`);
     }
 
+    async followUser(id_user,id_follower){
+        let userFound = this.getUserById(id_user);
+        if(!userFound) return;
+        userFound = this.getUserById(id_follower);
+        if(!userFound) return;
+         let {rows}=await db.query(`INSERT INTO subscribers (id_user,id_follower) VALUES ('${id_user}','${id_follower}') RETURNING *`);
+         return rows[0];
+    }
 
 
 
