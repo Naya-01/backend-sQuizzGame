@@ -96,10 +96,12 @@ class User{
     }
 
     async banUser(id){
+        if(await this.isBanned(id)) return console.log('cet utilisateur est deja ban');
         await db.query(`UPDATE users SET banned = true WHERE id_user = '${id}'`);
     }
 
     async unbanUser(id){
+        if(!await this.isBanned(id)) return console.log('cet utilisateur n\'est pas ban');
         await db.query(`UPDATE users SET banned = false WHERE id_user = '${id}'`);
     }
 
