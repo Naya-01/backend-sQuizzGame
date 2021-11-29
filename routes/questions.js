@@ -4,7 +4,7 @@ const db = require('../db');
 const { Questions } = require("../model/questions");
 const questionModel = new Questions();
 
-// GET /films?quizz= : read all the questions, or by a param that is the id of the quizz we need the questions
+// GET /questions?quizz= : read all the questions, or by a param that is the id of the quizz we need the questions
 router.get('/', async function(req, res, next) {
   const result = await questionModel.getAll(req.query.quizz);
   if(!result) res.sendStatus(404).end();
@@ -18,7 +18,7 @@ router.get('/:id', async function(req, res, next) {
   res.send(result);
 });
 
-// POST /questions : add a film
+// POST /questions : add a question
 router.post("/", async function (req, res) {
   // Send an error code '400 Bad request' if the body parameters are not valid
   if (
@@ -41,7 +41,7 @@ router.delete("/", async function (req, res) {
   res.send(question);
 });
 
-// PUT /films/{id} : update a film identified by its id
+// PUT /questions/{id} : update a question identified by its id
 router.put("/:id", async function (req, res) {
   // Send an error code '400 Bad request' if the body parameters are not valid
   if (
@@ -51,7 +51,7 @@ router.put("/:id", async function (req, res) {
     return res.status(400).end();
 
   const question = await questionModel.updateOne(req.params.id, req.body);
-  // Send an error code 'Not Found' if the film was not found :
+  // Send an error code 'Not Found' if the question was not found :
   if (!question) return res.sendStatus(404);
   res.send(question);
 });

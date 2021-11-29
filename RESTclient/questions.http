@@ -1,5 +1,5 @@
 ### View question by id
-GET http://localhost:3000/questions/36
+GET http://localhost:3000/questions/37
 
 ### View all questions. Or the questions of a specific quizz
 GET http://localhost:3000/questions?quizz=1
@@ -9,7 +9,7 @@ POST http://localhost:3000/questions/
 Content-Type: application/json
 
 {
-    "id_quizz": 1,
+    "id_quizz": 2,
     "question": "J'aime les pommes?"
 }
 
@@ -21,5 +21,5 @@ PUT http://localhost:3000/questions/37
 Content-Type: application/json
 
 {
-    "question": "J omsdfmes?"
+    "question": "J omsddjiqjdes?"
 }
