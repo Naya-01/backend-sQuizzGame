@@ -2,7 +2,8 @@
 const db = require('../db')
 const jwt = require("jsonwebtoken");
 const escape = require("escape-html");
-const jwtSecret = "theBestUserIsNotMe";
+require('dotenv').config();
+const jwtSecret = process.env.jwtSecret;
 const LIFETIME_JWT = 24 * 60 * 60 * 1000; //24h
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
