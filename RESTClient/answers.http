@@ -1,0 +1,19 @@
+### Get one answers by ID
+GET http://localhost:3000/answers/oneAnswers/3
+
+### Get all answers of a question by ID
+GET http://localhost:3000/answers/allAnswers/2
+
+### Add a answer
+POST http://localhost:3000/answers/
+Content-Type: application/json
+
+{
+  "id_question": 2,
+  "answer": "Oui, j'adore les pommes.",
+  "correct": true
+}
+
+### Delete a question
+
+DELETE http://localhost:3000/answers/5

@@ -7,6 +7,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var questionRouter = require('./routes/questions');
 var quizzRouter = require('./routes/quizz');
+var answersRouter = require('./routes/answers');
 
 var app = express();
 
@@ -20,5 +21,6 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/questions', questionRouter);
 app.use('/quizz', quizzRouter);
+app.use('/answers',answersRouter);
 
 module.exports = app;
