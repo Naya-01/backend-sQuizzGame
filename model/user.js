@@ -85,6 +85,22 @@ class User{
 
     }
 
+    async isBanned(id){
+        return await db.query(`SELECT banned FROM users WHERE id='${id}'`);
+    }
+
+    async isAdmin(id){
+        return await db.query(`SELECT is_admin FROM users WHERE id='${id}'`);
+    }
+
+    async banUser(id){
+        await db.query(`UPDATE users SET banned = true WHERE id_user = '${id}'`);
+    }
+
+    async unbanUser(id){
+        await db.query(`UPDATE users SET banned = false WHERE id_user = '${id}'`);
+    }
+
 
 
 
