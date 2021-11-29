@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
-const jwtSecret = "theBestUserIsNotMe";
+require('dotenv').config();
+const jwtSecret = process.env.jwtSecret;
 
 const { Users } = require("../models/users");
 const userModel = new Users();
