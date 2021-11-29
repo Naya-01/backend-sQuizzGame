@@ -5,19 +5,40 @@ const db = require('../db')
 
 const quizzModel = new Quizz();
 
-
-
-router.get('/:id', (req, res, next) => {
-    quizzModel.getQuizzById(req.params.id, res);
-  })
-
-router.get('/', (req, res, next) => {
-    quizzModel.getAllQuizz(res);
-})
-
 // TODO : a tester quand la db sera peuplée
-router.get('/mostLiked', (req, res, next) => {
-    quizzModel.get5MoreLikedQuizz(res);
+router.get('/mostliked', async function(req, res, next) {
+    const result = await quizzModel.get6MoreLikedQuizz();
+    if(!result) res.sendStatus(404).end();
+    res.send(result);
 })
+
+router.get('/forUser/:id', async function(req, res, next) {
+    const result = await quizzModel.getQuizzByUser(req.params.id);
+    if(!result) res.sendStatus(404).end();
+    res.send(result);
+})
+
+router.get('/:id', async function(req, res, next) {
+   const result = await quizzModel.getQuizzById(req.params.id);
+   if(!result) res.sendStatus(404).end();
+   res.send(result);
+});
+
+router.get('/', async function(req, res, next) {
+    const result = await quizzModel.getAllQuizz();
+    if(!result) res.sendStatus(404).end();
+    res.send(result);
+})
+
+router.post('/', async function(req, res, next) {
+    if (!req.body ||
+        (req.body.hasOwnProperty("name") && req.body.name.length === 0) ||
+        (req.body.hasOwnProperty("id_creator") && req.body.id_creator.length === 0)
+      ) return res.status(400).end();
+      const result = await quizzModel.addQuizz(req.body);
+      if(!result) res.sendStatus(404).end();
+      res.send(result);
+})
+
 
 module.exports = router;
