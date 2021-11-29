@@ -74,11 +74,12 @@ class User{
         if(newUser===undefined)return;
         const authenticatedUser = {
             username: newUser.name,
+            email:newUser.email,
             token: "noSoucis"
         };
 
         authenticatedUser.token=jwt.sign(
-            {username: authenticatedUser.username}, jwtSecret, {expiresIn: LIFETIME_JWT}
+            {username: authenticatedUser.username, email: authenticatedUser.email}, jwtSecret, {expiresIn: LIFETIME_JWT}
         );
 
         return authenticatedUser;
