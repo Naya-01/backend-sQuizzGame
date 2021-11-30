@@ -42,13 +42,11 @@ class Questions {
 
     async addOne(body) {
        //insertion
-       const req = 'INSERT INTO questions (id_quizz, question) VALUES ($1, $2);';
+       const req = 'INSERT INTO questions (id_quizz, question) VALUES ($1, $2) RETURNING id_question as id;';
        const data = [body.id_quizz, escape(body.question)];
-       await db.query(req,data);
-       //get the tuple of the question inserted and make a new objet to return
-       let { rows } =  await db.query('SELECT max(id_question) FROM questions WHERE id_quizz=$1',[body.id_quizz]);
+       let { rows } =   await db.query(req,data);
        const newQuestion={
-           id_question: rows[0].max,
+           id_question: rows[0].id,
            id_quizz: body.id_quizz,
            question: body.question,
        };
@@ -60,21 +58,35 @@ class Questions {
      * @param {number} id - id of the resource to be deleted
      * @returns {object} the resource that was deleted or undefined if the delete operation failed
      */
-    async deleteOne(id_quizz,id_question) {
+    async deleteOne(id_question) {
         let question = await this.getOne(id_question);
         if(!question) return false;
-        let req = 'DELETE FROM questions WHERE id_quizz=$1 AND id_question=$2;';
-        let data = [id_quizz, id_question];
+        let req = 'DELETE FROM questions WHERE id_question=$1;';
+        let data = [id_question];
         await db.query(req,data);
         return question;
     }
 
+    /**
+     * Delete a resource in the DB and return the deleted resource
+     * @param {number} id - id of the resource to be deleted
+     * @returns {object} the resource that was deleted or undefined if the delete operation failed
+     */
+     async deleteAll(id_quizz) {
+        let req = 'DELETE FROM questions WHERE id_quizz=$1;';
+        let data = [id_quizz];
+        await db.query(req,data);
+        return true;
+    }
+
+    
     /**
      * Update a resource in the DB and return the updated resource
      * @param {number} id - id of the resource to be updated
      * @param {object} body - it contains all the data to be updated
      * @returns {object} the updated resource or undefined if the update operation failed
      */
+    /*
     async updateOne(id, body) {
         let question = await this.getOne(id);
         if(!question) return false;
@@ -85,7 +97,7 @@ class Questions {
         return question;
         
 
-    }
+    }*/
 
 }
 module.exports = { Questions };

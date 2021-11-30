@@ -35,12 +35,20 @@ router.post("/", async function (req, res) {
 
 // DELETE /questions?quizz=&question= : delete a question
 router.delete("/", async function (req, res) {
-  const question = await questionModel.deleteOne(req.query.quizz,req.query.question);
+  const question = await questionModel.deleteOne(req.query.question);
   // Send an error code '404 Not Found' if the question was not found
   if (!question) return res.sendStatus(404);
   res.send(question);
 });
 
+// DELETE /questions/:id
+router.delete("/:id", async function (req, res) {
+  await questionModel.deleteAll(req.params.id);
+
+});
+
+
+/*
 // PUT /questions/{id} : update a question identified by its id
 router.put("/:id", async function (req, res) {
   // Send an error code '400 Bad request' if the body parameters are not valid
@@ -55,5 +63,7 @@ router.put("/:id", async function (req, res) {
   if (!question) return res.sendStatus(404);
   res.send(question);
 });
+
+*/
 
 module.exports = router;

@@ -1,5 +1,5 @@
 ### View question by id
-GET http://localhost:3000/questions/37
+GET http://localhost:3000/questions/54
 
 ### View all questions. Or the questions of a specific quizz
 GET http://localhost:3000/questions?quizz=1
@@ -9,14 +9,17 @@ POST http://localhost:3000/questions/
 Content-Type: application/json
 
 {
-    "id_quizz": 2,
+    "id_quizz": 6,
     "question": "J'aime les pommes?"
 }
 
 ### Delete a question
-DELETE http://localhost:3000/questions?quizz=1&question=36
+DELETE http://localhost:3000/questions?question=51
 
-### Update question
+### Delete all question from a quizz
+DELETE http://localhost:3000/questions/6
+
+### Update question => disabled
 PUT http://localhost:3000/questions/37
 Content-Type: application/json
 
