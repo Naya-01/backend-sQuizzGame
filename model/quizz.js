@@ -2,6 +2,13 @@
 var escape = require("escape-html");
 const db = require('../db')
 
+const { Questions } = require("../model/questions");
+const questionModel = new Questions();
+
+const { Answers } = require("../model/answers");
+const answerModel = new Answers();
+
+
 
 class Quizz {
     async getQuizzById(id) {
@@ -29,10 +36,27 @@ class Quizz {
         return rows;
     }
 
-    //TODO : ajouter des questions
     async addQuizz(body){
-        const { rows } = await db.query('INSERT INTO quizz (name, id_creator) VALUES ( $1, $2)', [escape(body.name), body.id_creator]);
+        let name = escape(body.name);
+        const { rows } = await db.query('INSERT INTO quizz (name, id_creator) VALUES ( $1, $2) RETURNING id_quizz', [name, body.id_creator]);
         if(!rows) return false;
+        let id_quizz = rows[0].id_quizz; // to get id_quizz
+        for(let i =0; i < body.questions.length; i++){
+            //Add a question
+            let newQuestion = { id_quizz: id_quizz,
+                                question: body.questions[i].question,
+            }
+            let questionAdded = await questionModel.addOne(newQuestion);
+            for(let j = 0; j < body.questions[i].answers.length; j++){
+                //Add an answer
+                let newAnswer = {
+                    id_question: questionAdded.id_question,
+                    answer: body.questions[i].answers[j].answer,
+                    correct: body.questions[i].answers[j].correct
+                }
+                await answerModel.addOne(newAnswer);
+            }
+        }
         return rows;
     }
     

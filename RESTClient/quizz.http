@@ -13,5 +13,16 @@ Content-Type: application/json
 
 {
     "id_creator": 1,
-    "name": "Quizz Années 2000"
+    "name": "Quizz Années 2000-2050",
+    "questions":    [{  "question": "Président des USA en 2008?",
+                        "answers": [{"answer":"Obama", "correct": true},
+                                    {"answer":"Bush", "correct": false},
+                                    {"answer":"Trump", "correct": false}]    
+                    },
+                    {  "question": "A quelle date était prévue la fin du monde?",
+                        "answers": [{"answer":"2012", "correct": true},
+                                    {"answer":"2022", "correct": false},
+                                    {"answer":"2005", "correct": false}]    
+                    }
+                    ]
 }
