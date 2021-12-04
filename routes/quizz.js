@@ -18,6 +18,12 @@ router.get('/byEmail/:email', async function(req, res, next) {
     res.send(result);
 })
 
+router.get('/likes/:id', async function(req, res, next) {
+    const result = await quizzModel.getNbLikes(req.params.id);
+    if(!result) res.sendStatus(404).end();
+    res.send(result);
+})
+
 router.get('/forUser/:id', async function(req, res, next) {
     const result = await quizzModel.getQuizzByUser(req.params.id);
     if(!result) res.sendStatus(404).end();

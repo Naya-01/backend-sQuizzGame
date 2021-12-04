@@ -30,7 +30,7 @@ class Quizz {
     }
 
     async getQuizzByEmail(email){
-        const { rows } = await db.query('SELECT q.* FROM quizz q, users u WHERE u.id_user = q.id_creator AND u.email=$1',[email]);
+        const { rows } = await db.query('SELECT q.* FROM quizz q, users u WHERE u.id_user = q.id_creator AND u.email=$1',);
         if(!rows) return false;
         return rows;
     }
@@ -41,10 +41,15 @@ class Quizz {
         if(!rows) return false;
         return rows;
     }
+    async getNbLikes(id_quizz){
+        const { rows } = await db.query('SELECT count(l.*) FROM quizz q, likes l WHERE q.id_quizz = $1 AND q.id_quizz = l.id_quizz',[id_quizz]);
+        if(!rows) return false;
+        return rows;
+    }
 
     async addQuizz(body){
         let name = escape(body.name);
-        const { rows } = await db.query('INSERT INTO quizz (name, id_creator) VALUES ( $1, $2) RETURNING id_quizz', [name, body.id_creator]);
+        const { rows } = await db.query('INSERT INTO quizz (name, id_creator, description) VALUES ( $1, $2, $3) RETURNING id_quizz', [name, body.id_creator, body.description]);
         if(!rows) return false;
         let id_quizz = rows[0].id_quizz; // to get id_quizz
         for(let i =0; i < body.questions.length; i++){

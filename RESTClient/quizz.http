@@ -7,13 +7,17 @@ GET http://localhost:3000/quizz
 ### See all quizz of an user
 GET http://localhost:3000/quizz/forUser/1
 
+### See number of likes for a quizz 
+GET http://localhost:3000/quizz/likes/3
+
 ### Add a quizz
 POST http://localhost:3000/quizz/
 Content-Type: application/json
 
 {
     "id_creator": 1,
-    "name": "Quizz Années 2000-2050",
+    "name": "Quizz Années 2000",
+    "description": "Test de culture générale sur les années 2000",
     "questions":    [{  "question": "Président des USA en 2008?",
                         "answers": [{"answer":"Obama", "correct": true},
                                     {"answer":"Bush", "correct": false},
