@@ -24,22 +24,6 @@ class Answers {
     }
 
     /**
-     * Returns null without answers
-     * Returns the answers of a specific question and participation
-     * @param {id_question} id of the question
-     * @returns {Array} Array of answers
-     */
-    async getAllParticipations(id_participation) {
-        if(id_participation===undefined){
-            return false;
-        }
-        else{
-            const { rows } = await db.query('SELECT a.* FROM answers a,participations_answers pa WHERE pa.id_participation=$2 AND a.id_answer = pa.id_answer',[id_participation]);
-            return rows;
-        }
-    }
-
-    /**
      * Add an answer in the answers table and returns the added answer
      * @param {object} body - it contains all required data to create the answer
      * @returns {object} the answer that was created (with id)
@@ -50,8 +34,6 @@ class Answers {
         const data = [body.id_question, escape(body.answer),body.correct];
 
         let {rows} = await db.query(req,data);
-
-        console.log(rows[0]);
 
         const newAnswer={
             id_answer: rows[0].id,
@@ -70,7 +52,11 @@ class Answers {
      */
     async getOne(id) {
         const { rows } = await db.query('SELECT * FROM answers WHERE id_answer = $1', [id]);
-        if(!rows) return false;
+
+        if(!rows){
+            return false;
+        }
+
         return rows[0];
     }
 
@@ -82,7 +68,10 @@ class Answers {
     async deleteOne(id_answer) {
         // Verify if the answer exist
         let answer = await this.getOne(id_answer);
-        if(!answer) return false;
+
+        if(!answer){
+            return false;
+        }
 
         // Delete all the participations of an answers
         let req = 'DELETE FROM participation_answers WHERE id_answer=$1;';

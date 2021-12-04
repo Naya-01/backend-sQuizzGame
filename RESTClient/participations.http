@@ -1,0 +1,11 @@
+
+### Add one participations
+
+POST http://localhost:3000/participations/
+Content-Type: application/json
+
+{
+  "id_quizz": 3,
+  "id_user": 1,
+  "score": 450
+}
