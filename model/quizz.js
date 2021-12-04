@@ -29,6 +29,12 @@ class Quizz {
         return rows;
     }
 
+    async getQuizzByEmail(email){
+        const { rows } = await db.query('SELECT q.* FROM quizz q, users u WHERE u.id_user = q.id_creator AND u.email=$1',[email]);
+        if(!rows) return false;
+        return rows;
+    }
+
     // TODO : a tester quand la db sera peuplée
     async get6MoreLikedQuizz(){
         const { rows } = await db.query('SELECT q.* FROM quizz q WHERE q.id_quizz IN (SELECT l.id_quizz FROM likes l GROUP BY l.id_quizz ORDER BY count(l.id_quizz) LIMIT 6)');

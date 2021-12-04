@@ -6,8 +6,14 @@ const db = require('../db')
 const quizzModel = new Quizz();
 
 // TODO : a tester quand la db sera peuplée
-router.get('/mostliked', async function(req, res, next) {
+router.get('/mostLiked', async function(req, res, next) {
     const result = await quizzModel.get6MoreLikedQuizz();
+    if(!result) res.sendStatus(404).end();
+    res.send(result);
+})
+
+router.get('/byEmail/:email', async function(req, res, next) {
+    const result = await quizzModel.getQuizzByEmail(req.params.email);
     if(!result) res.sendStatus(404).end();
     res.send(result);
 })
