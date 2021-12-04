@@ -7,6 +7,9 @@ GET http://localhost:3000/quizz
 ### See all quizz of an user
 GET http://localhost:3000/quizz/forUser/1
 
+### See all quizz of an user
+GET http://localhost:3000/quizz/byEmail/stefanIPL@gmail.com
+
 ### See number of likes for a quizz 
 GET http://localhost:3000/quizz/likes/3
 

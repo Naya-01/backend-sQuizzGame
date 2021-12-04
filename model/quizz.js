@@ -30,7 +30,7 @@ class Quizz {
     }
 
     async getQuizzByEmail(email){
-        const { rows } = await db.query('SELECT q.* FROM quizz q, users u WHERE u.id_user = q.id_creator AND u.email=$1',);
+        const { rows } = await db.query('SELECT q.* FROM quizz q, users u WHERE u.id_user = q.id_creator AND u.email=$1',[email]);
         if(!rows) return false;
         return rows;
     }
@@ -42,9 +42,15 @@ class Quizz {
         return rows;
     }
     async getNbLikes(id_quizz){
-        const { rows } = await db.query('SELECT count(l.*) FROM quizz q, likes l WHERE q.id_quizz = $1 AND q.id_quizz = l.id_quizz',[id_quizz]);
+        const { rows } = await db.query('SELECT count(l.*) AS nblikes FROM quizz q, likes l WHERE q.id_quizz = $1 AND q.id_quizz = l.id_quizz',[id_quizz]);
         if(!rows) return false;
         return rows;
+    }
+
+    async deleteQuizz(id_quizz){
+        const { rows } = await db.query('UPDATE quizz SET is_deleted=true WHERE q.id_quizz = $1',[id_quizz]);
+        if(!rows) return false;
+        return true;
     }
 
     async addQuizz(body){
