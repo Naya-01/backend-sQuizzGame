@@ -48,7 +48,7 @@ class Quizz {
     }
 
     async deleteQuizz(id_quizz){
-        const { rows } = await db.query('UPDATE quizz SET is_deleted=true WHERE q.id_quizz = $1',[id_quizz]);
+        const { rows } = await db.query('UPDATE quizz SET is_deleted=true WHERE id_quizz = $1',[id_quizz]);
         if(!rows) return false;
         return true;
     }
