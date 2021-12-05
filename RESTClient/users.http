@@ -28,3 +28,41 @@ Content-Type: application/json
   "id_user": 1,
   "id_follower": 2
 }
+
+### user is admin ? true or false
+GET http://localhost:3000/users/isAdmin/1
+
+### user is banned ? true or false
+GET http://localhost:3000/users/isBanned/1
+
+### Update ban by id
+PUT http://localhost:3000/users/ban
+Content-Type: application/json
+
+{
+  "id_user":10
+}
+
+### Update ban by email
+PUT http://localhost:3000/users/ban/email
+Content-Type: application/json
+
+{
+  "email":"damas@gmail.com"
+}
+
+### Update admin
+PUT http://localhost:3000/users/upAdmin
+Content-Type: application/json
+
+{
+  "id_user":10
+}
+
+### Update admin by email
+PUT http://localhost:3000/users/upAdmin/email
+Content-Type: application/json
+
+{
+  "email":"damas@gmail.com"
+}

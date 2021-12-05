@@ -88,17 +88,52 @@ class User{
     }
 
     async isBanned(id){
-        return await db.query(`SELECT banned FROM users WHERE id='${id}'`);
+
+        const {rows} = await db.query(`SELECT banned FROM users WHERE id_user='${id}'`);
+
+        if(!rows)
+            return;
+        return rows[0];
+    }
+
+    async isBannedByEmail(email){
+        let idUser = await this.findIdUserByEmail(email);
+        return await this.isBanned(idUser);
     }
 
     async isAdmin(id){
-        return await db.query(`SELECT is_admin FROM users WHERE id='${id}'`);
+        const {rows} =await db.query(`SELECT is_admin FROM users WHERE id_user='${id}'`);
+        if(!rows)
+            return;
+        return rows[0];
+    }
+
+    async isAdminByEmail(email){
+        let idUser = await this.findIdUserByEmail(email);
+        return await this.isAdmin(idUser);
     }
 
     async banUser(id){
-        if(await this.isAdmin(id)) return console.log('cet utilisateur ne peut etre ban car il est admin')
-        if(await this.isBanned(id)) return console.log('cet utilisateur est deja ban');
+        let boolean = await this.isAdmin(id);
+        if(boolean.is_admin){
+            console.log( 'cet utilisateur ne peut etre ban car il est admin');
+            return;
+        }
+        boolean = await this.isBanned(id);
+        if(boolean.banned){
+            console.log('cet utilisateur est deja ban');
+            return;
+        }
+
         await db.query(`UPDATE users SET banned = true WHERE id_user = '${id}'`);
+        return this.isBanned(id);
+    }
+
+    async banUserByEmail(email){
+        let idUser = await this.findIdUserByEmail(email);
+        let ban = await this.banUser(idUser);
+        if (!ban) return;
+        return this.isBanned(idUser);
     }
 
     async unbanUser(id){
@@ -113,6 +148,39 @@ class User{
         if(!userFound) return;
          let {rows}=await db.query(`INSERT INTO subscribers (id_user,id_follower) VALUES ('${id_user}','${id_follower}') RETURNING *`);
          return rows[0];
+    }
+    async getAllUsers(){
+        const {rows} = await db.query(`SELECT *  FROM users`);
+
+        if(!rows)
+            return;
+
+        return rows;
+    }
+
+    async upgradeUser(id){
+        let boolean = await this.isAdmin(id);
+        if(boolean.is_admin){
+            console.log( 'cet utilisateur ne peut pas etre upgrade en admin car il l\'est deja');
+            return;
+        }
+        await db.query(`UPDATE users SET is_admin = true WHERE id_user = '${id}'`);
+        return this.isAdmin(id);
+    }
+
+    async upgradeUserByEmail(email){
+        let idUser = await this.findIdUserByEmail(email);
+        let admin = await this.upgradeUser(idUser);
+        if(!admin) return;
+        return this.isAdmin(idUser);
+    }
+
+    async findIdUserByEmail(email){
+        const {rows} = await db.query(`SELECT *  FROM users WHERE email='${email}'`);
+        if(!rows)
+            return;
+
+        return rows[0].id_user;
     }
 
 
