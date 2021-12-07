@@ -137,8 +137,9 @@ class User{
     }
 
     async unbanUser(id){
-        if(!await this.isBanned(id)) return console.log('cet utilisateur n\'est pas ban');
+        if(!await this.isBanned(id)) return ;
         await db.query(`UPDATE users SET banned = false WHERE id_user = '${id}'`);
+        return true;
     }
 
     async followUser(id_user,id_follower){
