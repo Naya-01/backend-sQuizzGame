@@ -31,7 +31,12 @@ class User{
     }
 
     async getUserByEmail(email){
-        const {rows} = await db.query(`SELECT *  FROM users WHERE email='${email}'`);
+        const {rows} = await db.query(`SELECT u.*, count(DISTINCT subscribe.id_follower) AS "subscribers", count(DISTINCT follower.id_user) AS "subscriptions"
+        FROM users u
+         LEFT OUTER JOIN subscribers subscribe ON subscribe.id_user=u.id_user
+        LEFT OUTER JOIN subscribers follower ON follower.id_follower=u.id_user
+        WHERE u.email='${email}'
+        GROUP BY u.id_user;`);
         if(!rows) return;
         return rows[0];
     }
@@ -182,6 +187,24 @@ class User{
             return;
 
         return rows[0].id_user;
+    }
+
+    async getSubscribers(id_user){
+        const {rows} = await db.query(`SELECT count(s.*) FROM subscribers s WHERE s.id_user=${id_user}`);
+
+        if(!rows)
+            return;
+
+        return rows[0];
+    }
+
+    async getSubscriptions(id_user){
+        const {rows} = await db.query(`SELECT count(s.*) FROM subscribers s WHERE s.id_follower=${id_user}`);
+
+        if(!rows)
+            return;
+
+        return rows;
     }
 
 
