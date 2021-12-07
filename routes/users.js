@@ -56,6 +56,18 @@ router.get('/isBanned/email/:email', async function(req, res, next) {
     res.send(result);
 });
 
+router.get('/subscribers/:id', async function(req, res, next) {
+  const result = await userModel.getSubscribers(req.params.id);
+  if(!result) res.sendStatus(404).end();
+  res.send(result);
+});
+
+router.get('/subscriptions/:id', async function(req, res, next) {
+    const result = await userModel.getSubscriptions(req.params.id);
+    if(!result) res.sendStatus(404).end();
+    res.send(result);
+  });
+
 router.post('/register', async function(req, res, next) {
     if(
         !req.body ||

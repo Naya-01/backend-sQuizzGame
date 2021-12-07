@@ -32,6 +32,12 @@ Content-Type: application/json
 ### user is admin ? true or false
 GET http://localhost:3000/users/isAdmin/1
 
+### get number of subscribers for user 19
+GET http://localhost:3000/users/subscribers/19
+
+### get number of subscriptions for user 20
+GET http://localhost:3000/users/subscriptions/20
+
 ### user is banned ? true or false
 GET http://localhost:3000/users/isBanned/1
 
