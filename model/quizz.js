@@ -30,7 +30,7 @@ class Quizz {
     }
 
     async getQuizzByEmail(email){
-        const { rows } = await db.query('SELECT q.* FROM quizz q, users u WHERE u.id_user = q.id_creator AND u.email=$1 AND AND q.is_deleted=false',[email]);
+        const { rows } = await db.query('SELECT q.* FROM quizz q, users u WHERE u.id_user = q.id_creator AND u.email=$1 AND q.is_deleted=false',[email]);
         if(!rows) return false;
         return rows;
     }
