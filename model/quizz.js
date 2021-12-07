@@ -24,7 +24,7 @@ class Quizz {
     }
 
     async getAllQuizz(){
-        const { rows } = await db.query('SELECT * FROM quizz WHERE is_deleted=false');
+        const { rows } = await db.query('SELECT q.*,u.name as user_name FROM quizz q, users u WHERE is_deleted=false AND q.id_creator = u.id_user');
         if(!rows) return false;
         return rows;
     }
@@ -37,7 +37,7 @@ class Quizz {
 
     // TODO : a tester quand la db sera peuplée
     async get6MoreLikedQuizz(){
-        const { rows } = await db.query('SELECT q.* FROM quizz q WHERE q.is_deleted=false AND q.id_quizz IN (SELECT l.id_quizz FROM likes l GROUP BY l.id_quizz ORDER BY count(l.id_quizz) LIMIT 6)');
+        const { rows } = await db.query('SELECT q.*, u.name as user_name  FROM quizz q, users u WHERE q.is_deleted=false AND q.id_creator = u.id_user AND q.id_quizz IN (SELECT l.id_quizz FROM likes l GROUP BY l.id_quizz ORDER BY count(l.id_quizz) LIMIT 6)');
         if(!rows) return false;
         return rows;
     }
