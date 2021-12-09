@@ -51,7 +51,7 @@ class Participations {
             return false;
         }
         else{
-            const { rows } = await db.query(('SELECT a.* FROM answers a,participations_answers pa, participations p WHERE p.id_participation = pa.id_participation AND p.id_quizz = $1 AND p.id_user = $2 AND p.nb_try = $3 AND a.id_answer = pa.id_answer'),[id_quizz,id_user,nb_try]);
+            const { rows } = await db.query(('SELECT a.* FROM answers a,participations_answers pa, participations p WHERE p.id_participation = pa.id_participation AND p.id_quizz = $1 AND p.id_user = $2 AND p.nb_try = $3 AND a.id_answer = pa.id_answer ORDER BY a.id_question'),[id_quizz,id_user,nb_try]);
             return rows;
         }
     }
@@ -63,6 +63,16 @@ class Participations {
         else{
             const { rows } = await db.query('SELECT p.score FROM participations p WHERE p.id_participation = $1 AND p.nb_try = $2',[id_participation,nb_try]);
             return rows[0];
+        }
+    }
+
+    async getBestScores(id_quizz){
+        if(id_quizz===undefined){
+            return false;
+        }
+        else{
+            const { rows } = await db.query('SELECT p.score,u.name FROM participations p, users u WHERE p.id_quizz=$1 AND p.id_user = u.id_user ORDER BY p.score DESC LIMIT 3',[id_quizz]);
+            return rows;
         }
     }
 

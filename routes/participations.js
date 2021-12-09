@@ -31,4 +31,10 @@ router.post("/", async function (req, res) {
     res.send(participation);
 });
 
+router.get('/bestScores/:id', async function(req, res, next) {
+    const result = await participationModel.getBestScores(req.params.id);
+    if(!result) res.sendStatus(404).end();
+    res.send(result);
+});
+
 module.exports = router;
