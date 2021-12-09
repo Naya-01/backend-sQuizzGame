@@ -1,11 +1,12 @@
 //const { parse, serialize } = require("../utils/json");
 var escape = require("escape-html");
-const db = require('../db')
+const db = require('../db');
 
 const { Questions } = require("../model/questions");
 const questionModel = new Questions();
 
 const { Answers } = require("../model/answers");
+const { subscribe } = require("../routes/quizz");
 const answerModel = new Answers();
 
 
@@ -25,6 +26,12 @@ class Quizz {
 
     async getAllQuizz(){
         const { rows } = await db.query('SELECT q.*,u.name as user_name FROM quizz q, users u WHERE is_deleted=false AND q.id_creator = u.id_user');
+        if(!rows) return false;
+        return rows;
+    }
+
+    async getQuizzAbonnements(id){
+        const { rows } = await db.query('SELECT DISTINCT q.*,u.name as user_name FROM quizz q, users u, subscribers s WHERE s.id_follower = $1 AND is_deleted=false AND q.id_creator = s.id_user AND u.id_user = s.id_user',[id]);
         if(!rows) return false;
         return rows;
     }
