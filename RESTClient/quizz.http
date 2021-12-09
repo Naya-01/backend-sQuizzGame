@@ -4,6 +4,10 @@ GET http://localhost:3000/quizz/mostliked
 ### See all quizz
 GET http://localhost:3000/quizz
 
+### Get quizz from ID
+
+GET http://localhost:3000/quizz/3
+
 ### See all quizz of an user
 GET http://localhost:3000/quizz/forUser/1
 
@@ -11,7 +15,7 @@ GET http://localhost:3000/quizz/forUser/1
 GET http://localhost:3000/quizz/byEmail/stefanIPL@gmail.com
 
 ### See number of likes for a quizz 
-GET http://localhost:3000/quizz/likes/3
+GET http://localhost:3000/quizz/likes/17
 
 ### See number of likes for a quizz 
 DELETE  http://localhost:3000/quizz/4
