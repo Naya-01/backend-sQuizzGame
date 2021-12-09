@@ -1,6 +1,12 @@
 ### See quizz most liked
 GET http://localhost:3000/quizz/mostliked
 
+### See quizz most liked
+GET http://localhost:3000/quizz/abonnements/1
+
+### See all quizz
+GET http://localhost:3000/quizz/3
+
 ### See all quizz
 GET http://localhost:3000/quizz
 
@@ -22,17 +28,19 @@ Content-Type: application/json
 
 {
     "id_creator": 1,
-    "name": "Quizz Années 2000",
+    "name": "Quizz Star Wars",
     "description": "Test de culture générale sur les années 2000",
-    "questions":    [{  "question": "Président des USA en 2008?",
-                        "answers": [{"answer":"Obama", "correct": true},
-                                    {"answer":"Bush", "correct": false},
-                                    {"answer":"Trump", "correct": false}]    
+    "questions":    [{  "question": "Quel sabre ?",
+                        "answers": [{"answer":"Vert", "correct": true},
+                                    {"answer":"Rouge", "correct": false},
+                                    {"answer":"Bleu", "correct": false},
+                                    {"answer":"Mauve", "correct": false}]    
                     },
-                    {  "question": "A quelle date était prévue la fin du monde?",
-                        "answers": [{"answer":"2012", "correct": true},
-                                    {"answer":"2022", "correct": false},
-                                    {"answer":"2005", "correct": false}]    
+                    {  "question": "Nom?",
+                        "answers": [{"answer":"jedi", "correct": true},
+                                    {"answer":"padawan", "correct": false},
+                                    {"answer":"chuwi", "correct": false},
+                                    {"answer":"solo", "correct": false}]    
                     }
                     ]
 }
