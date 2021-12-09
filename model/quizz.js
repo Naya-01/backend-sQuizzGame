@@ -13,7 +13,7 @@ const answerModel = new Answers();
 
 class Quizz {
     async getQuizzById(id) {
-        const { rows } = await db.query('SELECT q.* FROM quizz q WHERE q.id_quizz = $1 AND q.is_deleted=false', [id]);
+        const { rows } = await db.query('SELECT q.*, u.name FROM quizz q, users u WHERE q.id_creator = u.id_user AND q.id_quizz = $1 AND q.is_deleted=false', [id]);
         if(!rows) return false;
         return rows[0];
     }
