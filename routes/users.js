@@ -22,7 +22,7 @@ router.get('/:id', async function(req, res, next) {
 
 /* GET users by email. */
 router.get('/email/:email', async function(req, res, next) {
-    const result =  await userModel.getUserByEmail(req.params.email);
+    const result =  await userModel.getUserByEmailWithSubs(req.params.email);
     if(!result) res.sendStatus(400).end();
     res.send(result);
     //await userModel.getUserById(res, req.params.id);
@@ -177,5 +177,11 @@ router.put('/upAdmin/email', async function(req, res, next) {
     return res.json(connexion);
 });
 
+/* GET users by id. */
+router.get('/filter/:filter', async function(req, res, next) {
+    const result =  await userModel.getUsersByFilterOnNameOrEmail(req.params.filter);
+    if(!result) res.sendStatus(400).end();
+    res.send(result);
+});
 
 module.exports = router;

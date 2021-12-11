@@ -29,6 +29,14 @@ Content-Type: application/json
   "id_follower": 2
 }
 
+### get users by filter on email or name
+GET http://localhost:3000/users/filter/ipl
+
+
+### user is admin ? true or false
+GET http://localhost:3000/users/
+
+
 ### user is admin ? true or false
 GET http://localhost:3000/users/isAdmin/1
 

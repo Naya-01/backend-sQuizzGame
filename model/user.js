@@ -30,7 +30,7 @@ class User{
         return user;
     }
 
-    async getUserByEmail(email){
+    async getUserByEmailWithSubs(email){
         const {rows} = await db.query(`SELECT u.*, count(DISTINCT subscribe.id_follower) AS "subscribers", count(DISTINCT follower.id_user) AS "subscriptions"
         FROM users u
          LEFT OUTER JOIN subscribers subscribe ON subscribe.id_user=u.id_user
@@ -204,6 +204,12 @@ class User{
         if(!rows)
             return;
 
+        return rows;
+    }
+
+    async getUsersByFilterOnNameOrEmail(filter){
+        const {rows} = await db.query(`SELECT u.*  FROM users u WHERE lower(u.name) LIKE lower('%${filter}%') OR lower(u.email) LIKE lower('%${filter}%') ORDER BY u.email`);
+        if(!rows) return;
         return rows;
     }
 
