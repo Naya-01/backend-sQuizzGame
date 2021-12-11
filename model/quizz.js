@@ -29,9 +29,19 @@ class Quizz {
         if(!rows) return false;
         return rows;
     }
+    async getQuizzExplorer(){
+        const { rows } = await db.query('SELECT q.*,u.name as user_name, random() FROM quizz q, users u WHERE is_deleted=false AND q.id_creator = u.id_user ORDER BY random() LIMIT 9');
+        if(!rows) return false;
+        return rows;
+    }
+    async getQuizzByCritere(critere){
+        const { rows } = await db.query(`SELECT DISTINCT q.*,u.name as user_name FROM quizz q, users u WHERE is_deleted=false AND q.id_creator = u.id_user AND ((lower(u.name) LIKE lower('%${critere}%')) OR (lower(q.name) LIKE lower('%${critere}%'))) ORDER BY q.name;`);
+        if(!rows) return false;
+        return rows;
+    }
 
     async getQuizzAbonnements(id){
-        const { rows } = await db.query('SELECT DISTINCT q.*,u.name as user_name FROM quizz q, users u, subscribers s WHERE s.id_follower = $1 AND is_deleted=false AND q.id_creator = s.id_user AND u.id_user = s.id_user',[id]);
+        const { rows } = await db.query('SELECT DISTINCT q.*,u.name as user_name FROM quizz q, users u, subscribers s WHERE s.id_follower = $1 AND is_deleted=false AND q.id_creator = s.id_user AND u.id_user = s.id_user ORDER BY q.date DESC LIMIT 6',[id]);
         if(!rows) return false;
         return rows;
     }
