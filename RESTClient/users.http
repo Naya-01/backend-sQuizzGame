@@ -4,8 +4,8 @@ POST http://localhost:3000/users/register
 Content-Type: application/json
 
 {
-  "name":"stef",
-  "email": "ssghghghgf@gmail.com",
+  "name":"Tchoupi",
+  "email": "tchoupi@gmail.com",
   "password":"123"
 }
 
@@ -14,7 +14,7 @@ POST http://localhost:3000/users/login
 Content-Type: application/json
 
 {
-  "email": "stefffffrefefzfzef@gmail.com",
+  "email": "stefanIPL@gmail.com",
   "password":"123"
 }
 

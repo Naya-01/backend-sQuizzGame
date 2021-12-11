@@ -49,20 +49,21 @@ class User{
     }
 
     async login(body){
-        const user = await this.getUserByEmail(body.email);
+        const user = await this.getUserByEmailWithSubs(body.email);
         if(!user) return;
         const hashPass = await bcrypt.hash(body.password,saltRounds);
         const match = await bcrypt.compare(body.password, user.password);
         if(!match) return;
 
         const authenticatedUser = {
+            id_user: user.id_user,
             username: user.name,
             email: user.email,
             token: "noSoucis"
         };
 
         authenticatedUser.token=jwt.sign(
-            {username: authenticatedUser.username, email: authenticatedUser.email}, jwtSecret, {expiresIn: LIFETIME_JWT}
+            {id_user: authenticatedUser.id_user, username: authenticatedUser.username, email: authenticatedUser.email}, jwtSecret, {expiresIn: LIFETIME_JWT}
         );
 
         return authenticatedUser;
@@ -70,22 +71,24 @@ class User{
     }
 
     async register(body){
-        const user = await this.getUserByEmail(body.email);
+        let user = await this.getUserByEmailWithSubs(body.email);
         if(user){
             console.log("L'utilisateur existe déjà");
             return;
         }
 
         const newUser = await this.addUser(body);
+        user = await this.getUserByEmailWithSubs(body.email);
         if(newUser===undefined)return;
         const authenticatedUser = {
-            username: newUser.name,
-            email:newUser.email,
+            id_user: user.id_user,
+            username: user.name,
+            email: user.email,
             token: "noSoucis"
         };
 
         authenticatedUser.token=jwt.sign(
-            {username: authenticatedUser.username, email: authenticatedUser.email}, jwtSecret, {expiresIn: LIFETIME_JWT}
+            {id_user: authenticatedUser.id_user, username: authenticatedUser.username, email: authenticatedUser.email}, jwtSecret, {expiresIn: LIFETIME_JWT}
         );
 
         return authenticatedUser;

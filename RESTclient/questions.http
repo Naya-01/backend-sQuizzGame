@@ -1,8 +1,8 @@
 ### View question by id
-GET http://localhost:3000/questions/54
+GET http://localhost:3000/questions/1
 
 ### View all questions. Or the questions of a specific quizz
-GET http://localhost:3000/questions?quizz=1
+GET http://localhost:3000/questions?quizz=3
 
 ### Add a question
 POST http://localhost:3000/questions/
