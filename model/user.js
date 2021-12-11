@@ -156,7 +156,7 @@ class User{
          return rows[0];
     }
     async getAllUsers(){
-        const {rows} = await db.query(`SELECT *  FROM users`);
+        const {rows} = await db.query(`SELECT u.*  FROM users u ORDER BY u.email`);
 
         if(!rows)
             return;
