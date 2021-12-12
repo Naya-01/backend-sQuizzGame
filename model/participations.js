@@ -66,6 +66,16 @@ class Participations {
         }
     }
 
+    async getBestPersonalsScores(id_quizz,id_user){
+        if(id_quizz===undefined,id_user===undefined){
+            return false;
+        }
+        else{
+            const { rows } = await db.query('SELECT p.score,p.difficulty FROM participations p WHERE p.id_quizz=$1 AND p.id_user = $2 ORDER BY p.score DESC LIMIT 3',[id_quizz,id_user]);
+            return rows;
+        }
+    }
+
     async getBestScores(id_quizz){
         if(id_quizz===undefined){
             return false;
