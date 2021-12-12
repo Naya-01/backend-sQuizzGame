@@ -12,6 +12,18 @@ router.get('/mostLiked', async function(req, res, next) {
     res.send(result);
 })
 
+router.get('/recherche/:critere', async function(req, res, next) {
+    const result = await quizzModel.getQuizzByCritere(req.params.critere);
+    if(!result) res.sendStatus(404).end();
+    res.send(result);
+})
+
+router.get('/explorer', async function(req, res, next) {
+    const result = await quizzModel.getQuizzExplorer();
+    if(!result) res.sendStatus(404).end();
+    res.send(result);
+})
+
 router.get('/byEmail/:email', async function(req, res, next) {
     const result = await quizzModel.getQuizzByEmail(req.params.email);
     if(!result) res.sendStatus(404).end();
