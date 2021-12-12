@@ -36,5 +36,11 @@ router.get('/bestScores/:id', async function(req, res, next) {
     if(!result) res.sendStatus(404).end();
     res.send(result);
 });
+///participations/personnalsBestScores?id_quizz=1&user_email=x@g.com
+router.get('/personnalsBestScores/', async function(req, res, next) {
+    const result = await participationModel.getBestPersonalsScores(req.query.id_quizz,req.query.id_user);
+    if(!result) res.sendStatus(404).end();
+    res.send(result);
+});
 
 module.exports = router;
