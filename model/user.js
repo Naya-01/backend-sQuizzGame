@@ -55,6 +55,14 @@ class User {
     return rows[0];
   }
 
+  async getUserById(id) {
+    const { rows } = await db.query(
+      `SELECT u.* FROM users u WHERE u.id_user=${id}`
+    );
+    if (!rows) return;
+    return rows[0];
+  }
+
   async getTwoUsersById(id1, id2) {
     const { rows } = await db.query(
       `SELECT u2.id_user AS "id_user2", u2.name AS "name2", u2.email AS "email2", u2.password AS "password2", u2.banned AS "banned2", u2.is_admin AS "is_admin2", count(DISTINCT subscribe.id_follower) AS "subscribers", count(DISTINCT follower.id_user) AS "subscriptions",
@@ -184,15 +192,27 @@ class User {
   }
 
   async followUser(id_user, id_follower) {
-    let userFound = this.getUserByIdWithSubs(id_user);
+    let userFound = this.getUserById(id_user);
     if (!userFound) return;
-    userFound = this.getUserByIdWithSubs(id_follower);
+    userFound = this.getUserById(id_follower);
     if (!userFound) return;
     let { rows } = await db.query(
       `INSERT INTO subscribers (id_user,id_follower) VALUES ('${id_user}','${id_follower}') RETURNING *`
     );
     return rows[0];
   }
+
+  async unfollowUser(id_user, id_follower) {
+    let { rows } = await db.query(
+      `SELECT s.* FROM subscribers s WHERE s.id_user=${id_user} AND s.id_follower=${id_follower}`
+    );
+    if (!rows[0]) return false;
+    let req = "DELETE FROM subscribers s WHERE s.id_user=$1 AND s.id_follower=$2;";
+    let data = [id_user,id_follower];
+    await db.query(req, data);
+    return rows[0];
+  }
+
   async getAllUsers() {
     const { rows } = await db.query(
       `SELECT u.*  FROM users u ORDER BY u.email`
@@ -229,6 +249,15 @@ class User {
     if (!rows) return;
 
     return rows[0].id_user;
+  }
+
+  async isFollowing(id_user, id_follower) {
+    const { rows } = await db.query(
+      `SELECT count(s.*) FROM subscribers s WHERE s.id_user=${id_user} AND s.id_follower=${id_follower}`
+    );
+    if (!rows) return;
+
+    return rows[0].count;
   }
 
   async getSubscribers(id_user) {

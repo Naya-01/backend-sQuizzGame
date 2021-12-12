@@ -25,20 +25,28 @@ POST http://localhost:3000/users/subscribe
 Content-Type: application/json
 
 {
-  "id_user": 1,
+  "id_user": 5,
   "id_follower": 2
 }
 
 ### get users by filter on email or name
 GET http://localhost:3000/users/filter/ipl
 
+### 
+GET http://localhost:3000/users/getTwoUsers/ids?id1=5&id2=6
+
+### Delete all question from a quizz
+DELETE http://localhost:3000/users/delete/subscription?id_user=1&id_follower=6
+
+### 
+GET http://localhost:3000/users/isFollowing/ids?id1=7&id2=1
 
 ### user is admin ? true or false
 GET http://localhost:3000/users
 
 
 ### user is admin ? true or false
-GET http://localhost:3000/users/a
+GET http://localhost:3000/users/getTwoIds?id=5
 
 
 

@@ -43,6 +43,12 @@ router.get('/isAdmin/email/:email', async function(req, res, next) {
     res.send(result);
 });
 
+router.delete("/delete/subscription/", async function (req, res) {
+    const subscription = await userModel.unfollowUser(req.query.id_user,req.query.id_follower);
+    if (!subscription) return res.sendStatus(404);
+    res.send(subscription);
+  });
+
 /* user is banned ?. by id*/
 router.get('/isBanned/:id', async function(req, res, next) {
     const result =  await userModel.isBanned(req.params.id)
@@ -186,10 +192,18 @@ router.get('/filter/:filter', async function(req, res, next) {
 });
 
 
-/* GET users by id. */
-router.get('/a/', async function(req, res, next) {
-    
-    res.send("ok");
+
+router.get('/getTwoUsers/ids/', async function(req, res, next) {
+    const result =  await userModel.getTwoUsersById(req.query.id1,req.query.id2);
+    if(!result) res.sendStatus(404).end();
+    res.send(result);
+});
+
+
+router.get('/isFollowing/ids/', async function(req, res, next) {
+    const result =  await userModel.isFollowing(req.query.id1,req.query.id2);
+    if(!result) res.sendStatus(404).end();
+    res.send(result);
 });
 
 
