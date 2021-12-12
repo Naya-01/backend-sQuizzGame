@@ -14,18 +14,19 @@ router.get('/', async function(req, res, next) {
 
 /* GET users by id. */
 router.get('/:id', async function(req, res, next) {
-    const result =  await userModel.getUserById(req.params.id);
+    const result =  await userModel.getUserByIdWithSubs(req.params.id);
     if(!result) res.sendStatus(400).end();
     res.send(result);
-   //await userModel.getUserById(res, req.params.id);
+   //await userModel.getUserByIdWithSubs(res, req.params.id);
 });
+
 
 /* GET users by email. */
 router.get('/email/:email', async function(req, res, next) {
     const result =  await userModel.getUserByEmailWithSubs(req.params.email);
     if(!result) res.sendStatus(400).end();
     res.send(result);
-    //await userModel.getUserById(res, req.params.id);
+    //await userModel.getUserByIdWithSubs(res, req.params.id);
 });
 
 /* user is admin ?. by id*/
@@ -183,5 +184,13 @@ router.get('/filter/:filter', async function(req, res, next) {
     if(!result) res.sendStatus(400).end();
     res.send(result);
 });
+
+
+/* GET users by id. */
+router.get('/a/', async function(req, res, next) {
+    
+    res.send("ok");
+});
+
 
 module.exports = router;
