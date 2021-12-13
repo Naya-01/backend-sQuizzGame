@@ -48,3 +48,13 @@ Content-Type: application/json
                     }
                     ]
 }
+
+### like a quizz
+
+POST http://localhost:3000/quizz/likes/
+Content-Type: application/json
+
+{
+  "id_quizz": 59,
+  "id_user": 9
+}

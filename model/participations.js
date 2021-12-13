@@ -1,11 +1,3 @@
-// A faire
-// Ajouter une participation (réponse choisie vis à vis d'un id_answers)
-// Créer le bail tout ça tout ça bg
-// Oublie pas la route aussi et les requires tout ça tout ça
-// Et oublie pas les requêtes -> participations.http
-
-
-
 var escape = require("escape-html");
 const db = require('../db');
 
@@ -13,6 +5,23 @@ class Participations {
 
     constructor() {
 
+    }
+
+    async addOneAnswer(body){// id_participation, id_answer
+        const res = await db.query('SELECT * FROM participation_answers WHERE id_answer=$1 AND id_participation=$2',[body.id_answer,body.id_participation]);
+        if(res.rows[0])return;
+
+        const req = 'INSERT INTO participation_answers (id_answer,id_participation) VALUES ($1,$2) RETURNING id_participation_answer as id;';
+        const data = [body.id_answer, body.id_participation];
+        let {rows} = await db.query(req,data);
+
+        const newAnswerParticipation={
+            id_participation_answer: rows[0].id,
+            id_answer: body.id_answer,
+            id_participation: body.id_participation,
+        };
+
+        return newAnswerParticipation;
     }
 
 
