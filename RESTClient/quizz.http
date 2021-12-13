@@ -24,7 +24,7 @@ GET http://localhost:3000/quizz/byEmail/stefanIPL@gmail.com
 GET http://localhost:3000/quizz/likes/17
 
 ### See number of likes for a quizz 
-DELETE  http://localhost:3000/quizz/4
+DELETE  http://localhost:3000/quizz/79
 
 ### Add a quizz
 POST http://localhost:3000/quizz/
@@ -52,6 +52,16 @@ Content-Type: application/json
 ### like a quizz
 
 POST http://localhost:3000/quizz/likes/
+Content-Type: application/json
+
+{
+  "id_quizz": 59,
+  "id_user": 9
+}
+
+### unlike a quizz
+
+DELETE http://localhost:3000/quizz/unlike/
 Content-Type: application/json
 
 {

@@ -70,6 +70,21 @@ router.post('/', async function(req, res, next) {
       res.send(result);
 })
 
+router.delete("/unlike/", async function (req, res) {
+    // Send an error code '400 Bad request' if the body parameters are not valid
+    if (
+        !req.body ||
+        !req.body.id_quizz ||
+        !req.body.id_user
+    )
+        return res.sendStatus(400);
+
+    const like = await quizzModel.unlike(req.body);
+    if(!like)res.sendStatus(400)
+
+    res.send(like);
+});
+
 router.delete('/:id', async function(req, res, next) {
       const result = await quizzModel.deleteQuizz(req.params.id);
       if(!result) res.sendStatus(404).end();
