@@ -12,6 +12,56 @@ const answerModel = new Answers();
 
 
 class Quizz {
+
+    async isLike(id_quizz,id_user){
+        if(id_quizz===undefined || id_user===undefined)return;
+
+        const res = await db.query('SELECT * FROM likes WHERE id_quizz=$1 AND id_user=$2',[id_quizz,id_user]);
+        let like;
+        if(res.rows[0]){
+            like={
+                isLiked:true
+            };
+        }else{
+            like={
+                isLiked:false
+            };
+        }
+        return like;
+    }
+
+    async unlike(body){
+        const res = await db.query('SELECT * FROM likes WHERE id_quizz=$1 AND id_user=$2',[body.id_quizz,body.id_user]);
+        if(!res.rows[0])return;
+
+        const req = 'DELETE FROM likes WHERE id_quizz = $1 AND id_user = $2;';
+        const data = [body.id_quizz, body.id_user];
+        let {rows} = await db.query(req,data);
+
+        const newLike={
+            id_quizz: body.id_quizz,
+            id_user: body.id_user
+        };
+
+        return newLike;
+    }
+
+    async like(body){// id_quizz,id_user
+        const res = await db.query('SELECT * FROM likes WHERE id_quizz=$1 AND id_user=$2',[body.id_quizz,body.id_user]);
+        if(res.rows[0])return;
+
+        const req = 'INSERT INTO likes (id_user,id_quizz) VALUES ($1,$2);';
+        const data = [body.id_user, body.id_quizz];
+        let {rows} = await db.query(req,data);
+
+        const newLike={
+            id_quizz: body.id_quizz,
+            id_user: body.id_user
+        };
+
+        return newLike;
+    }
+
     async getQuizzById(id) {
         const { rows } = await db.query('SELECT q.*, u.name as "username" FROM quizz q, users u WHERE q.id_creator = u.id_user AND q.id_quizz = $1 AND q.is_deleted=false', [id]);
         if(!rows) return false;

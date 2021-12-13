@@ -7,13 +7,25 @@ Content-Type: application/json
 {
   "id_quizz": 3,
   "id_user": 1,
-  "score": 450
+  "score": 450,
+  "difficulty": 1
 }
+
+
+### Add an answer participation
+POST http://localhost:3000/participations/answers/
+Content-Type: application/json
+
+{
+"id_participation": 3,
+"id_answer": 3
+}
+
 ### Get Best Scores
 
 GET http://localhost:3000/participations/bestScores/3
 
 
-###
+### Get personnals best scores
 
 GET http://localhost:3000/participations/personnalsBestScores?id_quizz=3&id_user=1

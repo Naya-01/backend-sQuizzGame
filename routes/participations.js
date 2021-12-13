@@ -16,13 +16,31 @@ router.get('/getParticipations', async function(req, res, next) {
     res.send(result);
 });
 
+//addOneAnswer
+
+router.post("/answers/", async function (req, res) {
+    // Send an error code '400 Bad request' if the body parameters are not valid
+    if (
+        !req.body ||
+        !req.body.id_participation ||
+        !req.body.id_answer
+    )
+        return res.sendStatus(400);
+
+    const participation = await participationModel.addOneAnswer(req.body);
+    if(!participation)res.sendStatus(400)
+
+    res.send(participation);
+});
+
 router.post("/", async function (req, res) {
     // Send an error code '400 Bad request' if the body parameters are not valid
     if (
         !req.body ||
         !req.body.id_quizz ||
         !req.body.id_user ||
-        !req.body.score
+        !req.body.score ||
+        !req.body.difficulty
     )
         return res.sendStatus(400);
 
