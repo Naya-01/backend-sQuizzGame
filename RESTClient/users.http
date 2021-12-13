@@ -9,7 +9,9 @@ Content-Type: application/json
   "password":"123"
 }
 
+
 ### Login user
+# @name login
 POST http://localhost:3000/users/login
 Content-Type: application/json
 
@@ -31,6 +33,7 @@ Content-Type: application/json
 
 ### get users by filter on email or name
 GET http://localhost:3000/users/filter/ipl
+Authorization: {{login.response.body.token}}
 
 ### 
 GET http://localhost:3000/users/getTwoUsers/ids?id1=5&id2=6
@@ -81,6 +84,7 @@ Content-Type: application/json
 ### Update admin
 PUT http://localhost:3000/users/upAdmin
 Content-Type: application/json
+Authorization: {{login.response.body.token}}
 
 {
   "id_user":10

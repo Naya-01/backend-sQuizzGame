@@ -2,16 +2,16 @@ const jwt = require("jsonwebtoken");
 require('dotenv').config();
 const jwtSecret = process.env.jwtSecret;
 
-const { Users } = require("../models/users");
-const userModel = new Users();
+const { User } = require("../model/user");
+const userModel = new User();
 
-const authorize = (req, res, next) => {
+const authorize =  async (req, res, next) => {
   let token = req.get("authorization");
   if (!token) return res.status(401).end();
 
   try {
     const decoded = jwt.verify(token, jwtSecret);
-    const userFound = userModel.getUserByEmail(decoded.email);//  <----- to change
+    const userFound = await userModel.getUserById(decoded.id_user);
 
     if (!userFound) return res.status(403).end();
     req.user = userFound;

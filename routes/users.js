@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 const { User } = require("../model/user");
 const userModel = new User();
-const db = require('../db')
+const db = require('../db');
+const { authorize } = require('../utils/authorize');
 
 
 /* GET all users. */
@@ -164,7 +165,7 @@ router.put('/upAdmin', async function(req, res, next) {
         (req.body.hasOwnProperty("id_user") && req.body.id_user.length === 0)
     )
         return res.status(400).end();
-
+    //if (!req.user.is_admin) return res.sendStatus(403); //Forbidden status code
     const connexion = await userModel.upgradeUser(req.body.id_user);
     if(!connexion) return res.status(409).end();
 
@@ -185,7 +186,7 @@ router.put('/upAdmin/email', async function(req, res, next) {
 });
 
 /* GET users by id. */
-router.get('/filter/:filter', async function(req, res, next) {
+router.get('/filter/:filter',async function(req, res, next) {
     const result =  await userModel.getUsersByFilterOnNameOrEmail(req.params.filter);
     if(!result) res.sendStatus(400).end();
     res.send(result);
