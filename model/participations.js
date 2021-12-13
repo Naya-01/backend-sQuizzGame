@@ -33,8 +33,8 @@ class Participations {
     async addOne(body) {
         const res = await db.query('SELECT coalesce(max(nb_try),0) as number FROM participations WHERE id_quizz=$1 AND id_user=$2',[body.id_quizz,body.id_user]);
 
-        const req = 'INSERT INTO participations (id_quizz,id_user,nb_try,score) VALUES ($1,$2,$3,$4) RETURNING id_participation as id;';
-        const data = [body.id_quizz, body.id_user, res.rows[0].number+1, body.score];
+        const req = 'INSERT INTO participations (id_quizz,id_user,nb_try,score,difficulty) VALUES ($1,$2,$3,$4,$5) RETURNING id_participation as id;';
+        const data = [body.id_quizz, body.id_user, res.rows[0].number+1, body.score,body.difficulty];
 
         let {rows} = await db.query(req,data);
 
@@ -42,6 +42,7 @@ class Participations {
             id_participation: rows[0].id,
             id_quizz: body.id_quizz,
             id_user: body.id_user,
+            difficulty: body.difficulty,
             nb_try: res.rows[0].number+1,
             score: body.score
         };
