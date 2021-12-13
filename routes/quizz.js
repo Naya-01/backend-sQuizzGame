@@ -5,6 +5,12 @@ const db = require('../db')
 
 const quizzModel = new Quizz();
 
+router.get('/isLiked/', async function(req, res, next) {
+    const result = await quizzModel.isLike(req.query.id_quizz,req.query.id_user);
+    if(!result) res.sendStatus(404).end();
+    res.send(result);
+})
+
 // TODO : a tester quand la db sera peuplée
 router.get('/mostLiked', async function(req, res, next) {
     const result = await quizzModel.get6MoreLikedQuizz();
@@ -69,6 +75,8 @@ router.post('/', async function(req, res, next) {
       if(!result) res.sendStatus(404).end();
       res.send(result);
 })
+
+
 
 router.delete("/unlike/", async function (req, res) {
     // Send an error code '400 Bad request' if the body parameters are not valid

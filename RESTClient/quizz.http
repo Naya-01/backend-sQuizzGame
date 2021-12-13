@@ -59,6 +59,10 @@ Content-Type: application/json
   "id_user": 9
 }
 
+### is a quizz liked
+
+GET http://localhost:3000/quizz/isLiked?id_quizz=59&id_user=9
+
 ### unlike a quizz
 
 DELETE http://localhost:3000/quizz/unlike/
