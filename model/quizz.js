@@ -21,11 +21,11 @@ class Quizz {
         if(res.rows[0]){
             like={
                 isLiked:true
-            }
+            };
         }else{
             like={
                 isLiked:false
-            }
+            };
         }
         return like;
     }
