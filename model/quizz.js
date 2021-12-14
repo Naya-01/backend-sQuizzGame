@@ -6,7 +6,6 @@ const { Questions } = require("../model/questions");
 const questionModel = new Questions();
 
 const { Answers } = require("../model/answers");
-//const { subscribe } = require("../routes/quizz");
 const answerModel = new Answers();
 
 
