@@ -7,8 +7,19 @@ GET http://localhost:3000/quizz/abonnements/1
 ### See all quizz
 GET http://localhost:3000/quizz/3
 
+### Login user
+# @name login
+POST http://localhost:3000/users/login
+Content-Type: application/json
+
+{
+  "email": "DMifflin@gmail.com",
+  "password":"123"
+}
+
 ### See all quizz
 GET http://localhost:3000/quizz
+Authorization: {{login.response.body.token}}
 
 ### Get quizz from ID
 
