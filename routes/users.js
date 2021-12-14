@@ -7,14 +7,14 @@ const { authorize } = require('../utils/authorize');
 
 
 /* GET all users. */
-router.get('/', async function(req, res, next) {
+router.get('/', async function(req, res, next) {//utilisé userlibrary
     const result =  await userModel.getAllUsers();
     if(!result) res.sendStatus(400).end();
     res.send(result);
 });
 
 /* GET users by email. */
-router.get('/email/:email', async function(req, res, next) {
+router.get('/email/:email', async function(req, res, next) { // PAS UTILISE
     const result =  await userModel.getUserByEmailWithSubs(req.params.email);
     if(!result) res.sendStatus(400).end();
     res.send(result);
@@ -22,46 +22,46 @@ router.get('/email/:email', async function(req, res, next) {
 });
 
 /* user is admin ?. by email */
-router.get('/isAdmin/email/:email', async function(req, res, next) {
+router.get('/isAdmin/email/:email', async function(req, res, next) {// PAS UTILISE
     const result =  await userModel.isAdminByEmail(req.params.email)
     if(!result) res.sendStatus(400).end();
     res.send(result);
 });
 
 /* user is admin ?. by id*/
-router.get('/isAdmin/:id', async function(req, res, next) {
+router.get('/isAdmin/:id', async function(req, res, next) {// PAS UTILISE
     const result =  await userModel.isAdmin(req.params.id)
     if(!result) res.sendStatus(400).end();
     res.send(result);
 });
 
-router.delete("/delete/subscription/", async function (req, res) {
+router.delete("/delete/subscription/", async function (req, res) { // utilisé dans another one
     const subscription = await userModel.unfollowUser(req.query.id_user,req.query.id_follower);
     if (!subscription) return res.sendStatus(404);
     res.send(subscription);
   });
 
 /* user is banned ?. by email*/
-router.get('/isBanned/email/:email', async function(req, res, next) {
+router.get('/isBanned/email/:email', async function(req, res, next) {// PAS UTILISE
     const result =  await userModel.isBannedByEmail(req.params.email)
     if(!result) res.sendStatus(400).end();
     res.send(result);
 });
 
 /* user is banned ?. by id*/
-router.get('/isBanned/:id', async function(req, res, next) {
+router.get('/isBanned/:id', async function(req, res, next) {// PAS UTILISE
     const result =  await userModel.isBanned(req.params.id)
     if(!result) res.sendStatus(400).end();
     res.send(result);
 });
 
-router.get('/subscribers/:id', async function(req, res, next) {
+router.get('/subscribers/:id', async function(req, res, next) {// PAS UTILISE
   const result = await userModel.getSubscribers(req.params.id);
   if(!result) res.sendStatus(404).end();
   res.send(result);
 });
 
-router.get('/subscriptions/:id', async function(req, res, next) {
+router.get('/subscriptions/:id', async function(req, res, next) {// PAS UTILISE
     const result = await userModel.getSubscriptions(req.params.id);
     if(!result) res.sendStatus(404).end();
     res.send(result);
@@ -97,7 +97,7 @@ router.post('/login', async function(req, res, next) {
     return res.json(connexion);
 });
 
-router.post('/subscribe', async function(req, res, next) {
+router.post('/subscribe', async function(req, res, next) { // utilisé dans another one
     if(
         !req.body ||
         (req.body.hasOwnProperty("id_user") && req.body.id_user.length === 0) ||
@@ -111,7 +111,7 @@ router.post('/subscribe', async function(req, res, next) {
     return res.json(connexion);
 });
 
-router.put('/ban/email', async function(req, res, next) {
+router.put('/ban/email/', async function(req, res, next) {// PAS UTILISE
     if(
         !req.body ||
         (req.body.hasOwnProperty("email") && req.body.email.length === 0)
@@ -124,7 +124,7 @@ router.put('/ban/email', async function(req, res, next) {
     return res.json(connexion);
 });
 
-router.put('/ban', async function(req, res, next) {
+router.put('/ban', async function(req, res, next) { // utilisé panel admin page
     if(
         !req.body ||
         (req.body.hasOwnProperty("id_user") && req.body.id_user.length === 0)
@@ -137,7 +137,7 @@ router.put('/ban', async function(req, res, next) {
     return res.json(connexion);
 });
 
-router.put('/unban', async function(req, res, next) {
+router.put('/unban', async function(req, res, next) {// utilisé panel admin page
     if(
         !req.body ||
         (req.body.hasOwnProperty("id_user") && req.body.id_user.length === 0)
@@ -150,7 +150,7 @@ router.put('/unban', async function(req, res, next) {
     return res.json(connexion);
 });
 
-router.put('/upAdmin/email', async function(req, res, next) {
+router.put('/upAdmin/email', async function(req, res, next) {// PAS UTILISE
     if(
         !req.body ||
         (req.body.hasOwnProperty("email") && req.body.email.length === 0)
@@ -163,7 +163,7 @@ router.put('/upAdmin/email', async function(req, res, next) {
     return res.json(connexion);
 });
 
-router.put('/upAdmin', authorize, async function(req, res, next) {
+router.put('/upAdmin', authorize, async function(req, res, next) { // utilisé panel admin
     if(
         !req.body ||
         (req.body.hasOwnProperty("id_user") && req.body.id_user.length === 0)
@@ -179,27 +179,27 @@ router.put('/upAdmin', authorize, async function(req, res, next) {
 
 
 /* GET users by id. */
-router.get('/filter/:filter',async function(req, res, next) {
+router.get('/filter/:filter',async function(req, res, next) { // utilisé userLibrary
     const result =  await userModel.getUsersByFilterOnNameOrEmail(req.params.filter);
     if(!result) res.sendStatus(400).end();
     res.send(result);
 });
 
-router.get('/getTwoUsers/ids/', async function(req, res, next) {
+router.get('/getTwoUsers/ids/', async function(req, res, next) {// utilisé ProfilLibrary
     const result =  await userModel.getTwoUsersById(req.query.id1,req.query.id2);
     if(!result) res.sendStatus(404).end();
     res.send(result);
 });
 
 
-router.get('/isFollowing/ids/', async function(req, res, next) {
+router.get('/isFollowing/ids/', async function(req, res, next) {// utilisé profilLibrary
     const result =  await userModel.isFollowing(req.query.id1,req.query.id2);
     if(!result) res.sendStatus(404).end();
     res.send(result);
 });
 
 /* GET users by id. */
-router.get('/:id', async function(req, res, next) {
+router.get('/:id', async function(req, res, next) {// profilLibrary et panelAdmin
     const result =  await userModel.getUserByIdWithSubs(req.params.id);
     if(!result) res.sendStatus(400).end();
     res.send(result);
