@@ -77,27 +77,7 @@ class Questions {
         let data = [id_quizz];
         await db.query(req,data);
         return true;
-    }
-
-    
-    /**
-     * Update a resource in the DB and return the updated resource
-     * @param {number} id - id of the resource to be updated
-     * @param {object} body - it contains all the data to be updated
-     * @returns {object} the updated resource or undefined if the update operation failed
-     */
-    /*
-    async updateOne(id, body) {
-        let question = await this.getOne(id);
-        if(!question) return false;
-        let req = 'UPDATE questions SET question=$1 WHERE id_question=$2;';
-        let data = [body.question, id];
-        await db.query(req,data);
-        question = await this.getOne(id);
-        return question;
-        
-
-    }*/
+    }Z
 
 }
 module.exports = { Questions };

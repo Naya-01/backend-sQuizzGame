@@ -81,7 +81,7 @@ class Participations {
             return false;
         }
         else{
-            const { rows } = await db.query('SELECT p.score,p.difficulty FROM participations p WHERE p.id_quizz=$1 AND p.id_user = $2 ORDER BY p.score DESC LIMIT 3',[id_quizz,id_user]);
+            const { rows } = await db.query('SELECT p.score,p.difficulty FROM participations p WHERE p.id_quizz=$1 AND p.id_user = $2 ORDER BY p.id_participation DESC LIMIT 3',[id_quizz,id_user]);
             return rows;
         }
     }
