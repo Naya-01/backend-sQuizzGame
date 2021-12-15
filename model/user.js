@@ -287,6 +287,15 @@ class User {
     if (!rows) return;
     return rows;
   }
+
+  async userExist(email){
+    const user = await this.getUserByEmailWithSubs(email);
+    if(user){
+      return true;
+    }else{
+      return false;
+    }
+  }
 }
 
 module.exports = { User };
