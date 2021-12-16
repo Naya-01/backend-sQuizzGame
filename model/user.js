@@ -296,6 +296,14 @@ class User {
       return false;
     }
   }
+
+  async passwordMatch(email,password){
+    const user = await this.getUserByEmailWithSubs(email);
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) return false;
+    else return true;
+  }
+
 }
 
 module.exports = { User };

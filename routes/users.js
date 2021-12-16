@@ -223,5 +223,16 @@ router.get('/:id', authorize, async function(req, res, next) {// profilLibrary e
     res.send(result);
 });
 
+/* password match */
+router.post('/matchPass',async function(req, res, next) {// utilisé ProfilLibrary
+    if(
+        !req.body ||
+        (req.body.hasOwnProperty("email") && req.body.email.length === 0) ||
+        (req.body.hasOwnProperty("password")&& req.body.password.length === 0)
+    )
+        return res.status(400).end();
+    const result =  await userModel.passwordMatch(req.body.email,req.body.password);
+    res.send(result);
+});
 
 module.exports = router;

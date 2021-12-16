@@ -97,3 +97,13 @@ Content-Type: application/json
 {
   "email":"damas@gmail.com"
 }
+
+
+#### password match
+POST http://localhost:3000/users/matchPass
+Content-Type: application/json
+
+{
+  "email": "damas@gmail.com",
+  "password":"1234"
+}
