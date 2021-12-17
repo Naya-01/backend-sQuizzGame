@@ -63,6 +63,20 @@ router.get('/subscribers/:id', authorize,async function(req, res, next) {// PAS 
   res.send(result);
 });
 
+/* get followers by user id */
+router.get('/all_followers/:id', authorize,async function(req, res, next) {// PAS UTILISE
+    const result = await userModel.getAllFollowers(req.params.id);
+    if(!result) res.sendStatus(404).end();
+    res.send(result);
+  });
+
+  /* get subscriptions by user id */
+router.get('/all_subscriptions/:id', authorize,async function(req, res, next) {// PAS UTILISE
+    const result = await userModel.getAllSubscriptions(req.params.id);
+    if(!result) res.sendStatus(404).end();
+    res.send(result);
+  });
+
 /* get number of subscriptions by user id */
 router.get('/subscriptions/:id', authorize,async function(req, res, next) {// PAS UTILISE
     const result = await userModel.getSubscriptions(req.params.id);

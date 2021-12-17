@@ -42,6 +42,20 @@ class User {
     if (!rows) return;
     return rows[0];
   }
+  async getAllFollowers(id){
+    const { rows } = await db.query('SELECT u.* \
+                                     FROM users u, subscribers s \
+                                     WHERE $1 = s.id_user AND u.banned=false AND u.id_user = s.id_follower',[id]);
+    return rows;
+  }
+
+  async getAllSubscriptions(id){
+    const { rows } = await db.query('SELECT u.* \
+                                     FROM users u, subscribers s \
+                                     WHERE $1 = s.id_follower AND u.banned=false AND u.id_user = s.id_user',[id]);
+    return rows;
+  }
+
 
   async getUserByIdWithSubs(id) {
     const { rows } =
