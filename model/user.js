@@ -293,12 +293,8 @@ class User {
   }
 
   async userExist(email){
-    const user = await this.getUserByEmailWithSubs(email);
-    if(user){
-      return true;
-    }else{
-      return false;
-    }
+    const user = await db.query(`SELECT email FROM users WHERE email='${email}'`);
+    return !!user;
   }
 
   async passwordMatch(email,password){
