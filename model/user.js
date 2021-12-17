@@ -294,7 +294,9 @@ class User {
 
   async userExist(email){
     const user = await db.query(`SELECT email FROM users WHERE email='${email}'`);
-    return !!user;
+    console.log(user);
+    if(!user.rows[0]) return false;
+    return true;
   }
 
   async passwordMatch(email,password){
