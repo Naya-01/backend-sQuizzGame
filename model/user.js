@@ -146,7 +146,7 @@ class User {
 
   async isBannedByEmail(email) {
     const { rows } = await db.query(
-        `SELECT banned FROM users WHERE id_user='${email}'`
+        `SELECT banned FROM users WHERE email='${email}'`
     );
 
     if (!rows) return;

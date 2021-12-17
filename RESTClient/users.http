@@ -65,7 +65,7 @@ GET http://localhost:3000/users/subscribers/19
 GET http://localhost:3000/users/subscriptions/20
 
 ### user is banned ? true or false
-GET http://localhost:3000/users/isBanned/1
+GET http://localhost:3000/users/isBanned/email/damas@gmail.com
 Authorization: {{userToken}}
 
 ### Update ban by id
