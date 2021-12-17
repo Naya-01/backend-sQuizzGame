@@ -145,8 +145,12 @@ class User {
   }
 
   async isBannedByEmail(email) {
-    let idUser = await this.findIdUserByEmail(email);
-    return await this.isBanned(idUser);
+    const { rows } = await db.query(
+        `SELECT banned FROM users WHERE id_user='${email}'`
+    );
+
+    if (!rows) return;
+    return rows[0];
   }
 
   async isAdmin(id) {

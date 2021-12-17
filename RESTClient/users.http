@@ -19,7 +19,9 @@ Content-Type: application/json
   "email": "DMifflin@gmail.com",
   "password":"123"
 }
-
+> {%
+ client.global.set("userToken", response.body.token);
+ %}
 
 ### follow user
 
@@ -64,6 +66,7 @@ GET http://localhost:3000/users/subscriptions/20
 
 ### user is banned ? true or false
 GET http://localhost:3000/users/isBanned/1
+Authorization: {{userToken}}
 
 ### Update ban by id
 PUT http://localhost:3000/users/ban
