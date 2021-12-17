@@ -6,12 +6,19 @@ const db = require('../db');
 const { authorize } = require('../utils/authorize');
 
 
+
 /* GET all users. */
 router.get('/', authorize,async function(req, res, next) {//utilisé userlibrary
     if(!req.user.is_admin) res.sendStatus(409).end();
     const result =  await userModel.getAllUsers();
     if(!result) res.sendStatus(404).end();
     res.send(result);
+});
+
+
+/* GET user of the session. */
+router.get('/getUserSession/', authorize,async function(req, res, next) {
+    res.send(req.user);
 });
 
 /* GET an user by email with all his subscriptions and subscribers */
