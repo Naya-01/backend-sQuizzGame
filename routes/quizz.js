@@ -61,11 +61,6 @@ router.get('/:id', authorize, async function(req, res, next) {
    res.send(result);
 });
 
-router.get('/', authorize, async function(req, res, next) {
-    const result = await quizzModel.getAllQuizz();
-    if(!result) res.sendStatus(404).end();
-    res.send(result);
-})
 
 router.post('/', authorize, async function(req, res, next) {
     if (!req.body ||
