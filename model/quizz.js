@@ -141,7 +141,7 @@ class Quizz {
 
     async addQuizz(body){
         let name = escape(body.name);
-        let description = (body.description);
+        let description = escape(body.description);
         const { rows } = await db.query('INSERT INTO quizz (name, id_creator, description) VALUES ( $1, $2, $3) RETURNING id_quizz', [name, body.id_creator, description]);
         if(!rows) return false;
         let id_quizz = rows[0].id_quizz; // On récupère id_quizz
