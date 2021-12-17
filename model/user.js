@@ -159,8 +159,12 @@ class User {
   }
 
   async isBannedByEmail(email) {
-    let idUser = await this.findIdUserByEmail(email);
-    return await this.isBanned(idUser);
+    const { rows } = await db.query(
+        `SELECT banned FROM users WHERE email='${email}'`
+    );
+
+    if (!rows) return;
+    return rows[0];
   }
 
   async isAdmin(id) {
@@ -303,12 +307,10 @@ class User {
   }
 
   async userExist(email){
-    const user = await this.getUserByEmailWithSubs(email);
-    if(user){
-      return true;
-    }else{
-      return false;
-    }
+    const user = await db.query(`SELECT email FROM users WHERE email='${email}'`);
+    console.log(user);
+    if(!user.rows[0]) return false;
+    return true;
   }
 
   async passwordMatch(email,password){

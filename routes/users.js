@@ -6,10 +6,24 @@ const db = require('../db');
 const { authorize } = require('../utils/authorize');
 
 
+
 /* GET all users. */
 router.get('/', authorize,async function(req, res, next) {//utilisé userlibrary
     if(!req.user.is_admin) res.sendStatus(409).end();
     const result =  await userModel.getAllUsers();
+    if(!result) res.sendStatus(404).end();
+    res.send(result);
+});
+
+
+/* GET user of the session. */
+router.get('/getUserSession/', authorize,async function(req, res, next) {
+    res.send(req.user);
+});
+
+/* GET user of the session. */
+router.get('/getUserSessionWithSubs/', authorize,async function(req, res, next) {
+    const result =  await userModel.getUserByIdWithSubs(req.user.id_user);
     if(!result) res.sendStatus(404).end();
     res.send(result);
 });
@@ -43,7 +57,7 @@ router.delete("/delete/subscription/", authorize,async function (req, res) { // 
   });
 
 /* check if the user is banned by email */
-router.get('/isBanned/email/:email', authorize,async function(req, res, next) {// PAS UTILISE
+router.get('/isBanned/email/:email', async function(req, res, next) {// PAS UTILISE
     const result =  await userModel.isBannedByEmail(req.params.email)
     if(!result) res.sendStatus(404).end();
     res.send(result);
