@@ -43,7 +43,7 @@ router.delete("/delete/subscription/", authorize,async function (req, res) { // 
   });
 
 /* check if the user is banned by email */
-router.get('/isBanned/email/:email', authorize,async function(req, res, next) {// PAS UTILISE
+router.get('/isBanned/email/:email', async function(req, res, next) {// PAS UTILISE
     const result =  await userModel.isBannedByEmail(req.params.email)
     if(!result) res.sendStatus(404).end();
     res.send(result);
