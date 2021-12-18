@@ -16,6 +16,7 @@ class User {
     this.banned = banned;
     this.is_admin = is_admin;
   }
+
   /**
    * Add a resource in the DB and returns the added resource
    * @param {object} body - it contains all required data to create a ressource
@@ -76,6 +77,11 @@ class User {
   }
 
 
+  /**
+   * Get a user with an id with his subscribers and subscriptions
+   * @param {number} id - id of user 
+   * @returns {object} user having this id, undefined otherwise
+   */
   async getUserByIdWithSubs(id) {
     const { rows } =
       await db.query(`SELECT u.*, count(DISTINCT subscribe.id_follower) AS "subscribers", count(DISTINCT follower.id_user) AS "subscriptions"
@@ -87,6 +93,7 @@ class User {
     if (!rows) return;
     return rows[0];
   }
+
   /**
    * Returns the resource (user) identified by id
    * @param {number} id - id of the resource to find
@@ -100,6 +107,14 @@ class User {
     return rows[0];
   }
 
+  /**
+   * Get 2 users but getting the number of subscribers and subscriptions for the id2 in addition
+   * user1 = user session
+   * user2 = user in the url, with 2 more columns (subscriptions and subscribers)
+   * @param {number} id1 - id of first user 
+   * @param {number} id2 - id of second user we want his subscriber and subscriptions too
+   * @returns {object} object having 2 users, the 2nd one with the subscribers and subscriptions, the 2st one simple data, and if no tuple then undefined
+   */
   async getTwoUsersById(id1, id2) {
     const { rows } = await db.query(
       `SELECT u2.id_user AS "id_user2", u2.name AS "name2", u2.email AS "email2", u2.password AS "password2", u2.banned AS "banned2", u2.is_admin AS "is_admin2", count(DISTINCT subscribe.id_follower) AS "subscribers", count(DISTINCT follower.id_user) AS "subscriptions",
@@ -148,6 +163,7 @@ class User {
 
     return authenticatedUser;
   }
+
   /**
    * register a quidam
    * @param {object} body - it contains all required data to create a ressource
@@ -184,6 +200,7 @@ class User {
 
     return authenticatedUser;
   }
+
   /**
    * Check if a user is banned by id
    * @param {number} id - id of the user we want to know if banned
@@ -197,6 +214,7 @@ class User {
     if (!rows) return;
     return rows[0];
   }
+
   /**
    * Check if a user is banned by email
    * @param {String} email - email of the user we want to know if banned
@@ -210,6 +228,7 @@ class User {
     if (!rows) return;
     return rows[0];
   }
+
   /**
    * Check if a user is admin by id
    * @param {number} id - id of the user we want to know if is admin
@@ -222,6 +241,7 @@ class User {
     if (!rows) return;
     return rows[0];
   }
+
   /**
    * Check if a user is admin by email
    * @param {String} email - email of the user we want to know if is admin
@@ -231,6 +251,7 @@ class User {
     let idUser = await this.findIdUserByEmail(email);
     return await this.isAdmin(idUser);
   }
+
   /**
    * Ban a user
    * @param {number} id - id of the user we want to ban
@@ -251,6 +272,7 @@ class User {
     await db.query(`UPDATE users SET banned = true WHERE id_user = '${id}'`);
     return this.isBanned(id);
   }
+
   /**
    * Ban a user
    * @param {String} email - email of the user we want to ban
@@ -262,6 +284,7 @@ class User {
     if (!ban) return;
     return this.isBanned(idUser);
   }
+
   /**
    * Unban a user
    * @param {number} id - id of the user we want to ban
@@ -393,6 +416,7 @@ class User {
 
     return rows[0];
   }
+  
   /**
    * Get number of subscriptions of a user
    * @param {*} id_user - id of the user
