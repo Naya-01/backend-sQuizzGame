@@ -131,6 +131,7 @@ class User {
       id_user: user.id_user,
       username: user.name,
       email: user.email,
+      is_admin: user.is_admin,
       token: "noSoucis",
     };
 
@@ -139,6 +140,7 @@ class User {
         id_user: authenticatedUser.id_user,
         username: authenticatedUser.username,
         email: authenticatedUser.email,
+        is_admin: authenticatedUser.is_admin,
       },
       jwtSecret,
       { expiresIn: LIFETIME_JWT }
@@ -165,6 +167,7 @@ class User {
       id_user: user.id_user,
       username: user.name,
       email: user.email,
+      is_admin: user.is_admin,
       token: "noSoucis",
     };
 
@@ -173,6 +176,7 @@ class User {
         id_user: authenticatedUser.id_user,
         username: authenticatedUser.username,
         email: authenticatedUser.email,
+        is_admin: authenticatedUser.is_admin,
       },
       jwtSecret,
       { expiresIn: LIFETIME_JWT }
