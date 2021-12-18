@@ -91,7 +91,7 @@ class Participations {
             return false;
         }
         else{
-            const { rows } = await db.query('SELECT p.score,u.name,p.difficulty FROM participations p, users u WHERE p.id_quizz=$1 AND p.id_user = u.id_user ORDER BY p.score DESC LIMIT 3',[id_quizz]);
+            const { rows } = await db.query('SELECT DISTINCT p.score,u.name,p.difficulty FROM participations p, users u WHERE p.id_quizz=$1 AND p.id_user = u.id_user ORDER BY p.score DESC LIMIT 3',[id_quizz]);
             return rows;
         }
     }
