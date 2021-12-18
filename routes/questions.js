@@ -41,10 +41,11 @@ router.delete("/", authorize,async function (req, res) {
   res.send(question);
 });
 
-// DELETE /questions/:id
+// DELETE /questions/:idQuizz
 router.delete("/:id", authorize,async function (req, res) {
-  await questionModel.deleteAll(req.params.id);
-
+  //always true. We do no need to know if the id_quizz exists because the deletion will be done in any case
+  const bool = await questionModel.deleteAll(req.params.id);
+  res.send(bool);
 });
 
 
