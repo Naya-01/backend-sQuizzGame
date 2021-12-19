@@ -403,7 +403,7 @@ class User {
 
   /**
    * Get number of subscribers of a user
-   * @param {*} id_user - id of the user
+   * @param {number} id_user - id of the user
    * @returns {number} number of subscriber of the id_user
    */
   async getSubscribers(id_user) {
@@ -417,7 +417,7 @@ class User {
 
   /**
    * Get number of subscriptions of a user
-   * @param {*} id_user - id of the user
+   * @param {number} id_user - id of the user
    * @returns {number} number of subscription of the id_user
    */
   async getSubscriptions(id_user) {

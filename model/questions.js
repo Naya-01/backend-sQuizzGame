@@ -39,9 +39,7 @@ class Questions {
      * @param {object} body - it contains all required data to create a ressource
      * @returns {object} the resource that was created
      */
-
     async addOne(body) {
-       //insertion
        const req = 'INSERT INTO questions (id_quizz, question) VALUES ($1, $2) RETURNING id_question as id;';
        const data = [body.id_quizz, escape(body.question)];
        let { rows } =   await db.query(req,data);
