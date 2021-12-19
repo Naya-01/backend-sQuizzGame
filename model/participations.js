@@ -57,7 +57,7 @@ class Participations {
 
     /**
      * Select the answers of a specific question and participation
-     * @param {id_quizz,id_user,id_try} id_quizz of the quizz, id_user of the user, id_try of the try
+     * @param {number,number,number} id_quizz of the quizz, id_user of the user, id_try of the try
      * @returns {Array} Array of answers
      */
     async getAllParticipations(id_quizz,id_user,nb_try) {
