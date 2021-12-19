@@ -6,7 +6,7 @@ class Questions {
     }
 
     /**
-     * Returns all resources (questions)
+     * Get all questions or from a specific quizz
      * @param {number} id_quizz of the quizz we need its questions
      * @returns {Array} Array of resources
      */
@@ -24,7 +24,7 @@ class Questions {
     }
 
     /**
-     * Returns the resource (question) identified by id
+     * Get the question identified by id
      * @param {number} id - id of the resource to find
      * @returns {object} the resource found or undefined if the id does not exist
      */
@@ -52,7 +52,7 @@ class Questions {
     }
 
     /**
-     * Delete a resource in the DB and return the deleted resource
+     * Delete a resource (question) in the DB and return the deleted resource
      * @param {number} id_question - id of the resource to be deleted
      * @returns {object} the resource that was deleted or undefined if the delete operation failed
      */

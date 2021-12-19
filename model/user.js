@@ -330,7 +330,7 @@ class User {
   }
 
   /**
-   * Returns all resources (users)
+   * Get all resources (users)
    * @returns {Array} Array of resources
    */
   async getAllUsers() {
@@ -404,7 +404,7 @@ class User {
   /**
    * Get number of subscribers of a user
    * @param {number} id_user - id of the user
-   * @returns {number} number of subscriber of the id_user
+   * @returns {number} number of subscribers of the id_user
    */
   async getSubscribers(id_user) {
     const { rows } = await db.query(
