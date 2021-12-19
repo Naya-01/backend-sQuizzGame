@@ -8,8 +8,8 @@ class Answers {
     }
 
     /**
-     * Returns all answers without params
-     * Returns all answers of a specific question
+     * Select all answers without params
+     * Select all answers of a specific question
      * @returns {Array} Array of answers
      * @param id_question searched
      */
@@ -46,7 +46,7 @@ class Answers {
     }
 
     /**
-     * Returns the resource identified by id
+     * Select the resource identified by id
      * @param {number} id - id of the resource to find
      * @returns {object} the resource found or undefined if the id does not lead to a resource
      */

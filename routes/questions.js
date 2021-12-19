@@ -36,7 +36,6 @@ router.post("/", authorize,async function (req, res) {
 // DELETE /questions?question= : delete a question
 router.delete("/", authorize,async function (req, res) {
   const question = await questionModel.deleteOne(req.query.question);
-  // Send an error code '404 Not Found' if the question was not found
   if (!question) return res.sendStatus(404);
   res.send(question);
 });

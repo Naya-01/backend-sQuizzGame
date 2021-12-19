@@ -56,9 +56,8 @@ class Participations {
     }
 
     /**
-     * Returns null without answers
-     * Returns the answers of a specific question and participation
-     * @param {id_question} id of the question
+     * Select the answers of a specific question and participation
+     * @param {number,number,number} id_quizz of the quizz, id_user of the user, id_try of the try
      * @returns {Array} Array of answers
      */
     async getAllParticipations(id_quizz,id_user,nb_try) {
@@ -73,7 +72,7 @@ class Participations {
 
 
     /**
-     * Return score of a try
+     * Select score of a try
      * @param {object} body - it contains all required data to get the score
      * @returns {object} the score
      */
@@ -88,7 +87,7 @@ class Participations {
     }
 
     /**
-     * Return the 3 last score of a user from a quizz
+     * Select the 3 last score of a user from a quizz
      * @param {object} body - it contains all required data to get the score
      * @returns {object} the scores
      */
@@ -104,7 +103,7 @@ class Participations {
 
 
     /**
-     * Return the 3 best scores of a quizz
+     * Select the 3 best scores of a quizz
      * @param {object} body - it contains all required data to get the score
      * @returns {object} the scores
      */
