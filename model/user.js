@@ -409,14 +409,13 @@ class User {
    */
   async getSubscribers(id_user) {
     const { rows } = await db.query(
-      `SELECT count(s.*) FROM subscribers s WHERE s.id_user=${id_user}`
-    );
+      'SELECT count(DISTINCT s.*) FROM users u, subscribers s WHERE $1 = s.id_user AND u.banned=false AND u.id_user = s.id_follower',[id_user]);
 
     if (!rows) return;
 
     return rows[0];
   }
-  
+
   /**
    * Get number of subscriptions of a user
    * @param {*} id_user - id of the user
@@ -424,7 +423,7 @@ class User {
    */
   async getSubscriptions(id_user) {
     const { rows } = await db.query(
-      `SELECT count(s.*) FROM subscribers s WHERE s.id_follower=${id_user}`
+      'SELECT count(s.*) AS "nbAbonnements" FROM users u, subscribers s WHERE $1 = s.id_follower AND u.banned=false AND u.id_user = s.id_user',[id_user]
     );
 
     if (!rows) return;
