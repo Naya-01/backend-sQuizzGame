@@ -14,8 +14,8 @@ class Quizz {
 
     /**
      * Savoir si un quizz est liké par un certain user
-     * @param {*} id_quizz l'id du quizz
-     * @param {*} id_user l'id de l'user
+     * @param {number} id_quizz l'id du quizz
+     * @param {number} id_user l'id de l'user
      * @returns un objet like 
      */
     async isLike(id_quizz,id_user){
@@ -38,7 +38,7 @@ class Quizz {
 
     /**
      * Supprime un like à un quizz
-     * @param {*} body l'id quizz et l'id_user
+     * @param {object} body l'id quizz et l'id_user
      * @returns un objet like 
      */
     async unlike(body){
@@ -61,7 +61,7 @@ class Quizz {
 
     /**
      * Ajouter un like à un quizz
-     * @param {*} body l'id quizz et l'id_user
+     * @param {object} body l'id quizz et l'id_user
      * @returns un objet like
      */
     async like(body){
@@ -84,7 +84,7 @@ class Quizz {
 
     /**
      * Va chercher le quizz correspondant à l'id en paramètre
-     * @param {*} id l'id du quizz
+     * @param {number} id l'id du quizz
      * @returns le quizz ou false si il n'existe pas
      */
     async getQuizzById(id) {
@@ -97,7 +97,7 @@ class Quizz {
 
     /**
      * Va chercher les quizz du créateur correspondant à l'id en paramètre
-     * @param {*} id l'id du créateur
+     * @param {number} id l'id du créateur
      * @returns les quizz du créateur ou false
      */
     async getQuizzByUser(id){
@@ -123,7 +123,7 @@ class Quizz {
 
     /**
      * Va chercher les quizz qui ont le critere qui apparait dans le nom ou l'auteur de celui-ci
-     * @param {*} critere ce que l'user veut rechercher
+     * @param {string} critere ce que l'user veut rechercher
      * @returns les quizz correspondant au critere ou false
      */
     async getQuizzByCritere(critere){
@@ -137,7 +137,7 @@ class Quizz {
 
     /**
      * Va chercher les quizz en abonnements de l'user qui a pour id le parametre
-     * @param {*} id id de l'user
+     * @param {number} id id de l'user
      * @returns les quizz en abonnements ou false
      */
     async getQuizzAbonnements(id){
@@ -151,7 +151,7 @@ class Quizz {
 
     /**
      * Va chercher les quizz d'un user qui a pour email le parametre
-     * @param {*} email email de l'user
+     * @param {string} email email de l'user
      * @returns les quizz de l'user ou false
      */
     async getQuizzByEmail(email){
@@ -176,7 +176,7 @@ class Quizz {
     }
     /**
      * Va chercher le nombre de like d'un quizz dont l'id est en paramètre
-     * @param {*} id_quizz l'id du quizz
+     * @param {number} id_quizz l'id du quizz
      * @returns les likes du quizz ou false
      */
     async getNbLikes(id_quizz){
@@ -189,7 +189,7 @@ class Quizz {
 
     /**
      * Va supprimer le quizz dont l'id est en paramètre
-     * @param {*} id_quizz l'id du quizz 
+     * @param {number} id_quizz l'id du quizz 
      * @returns true si il a été supprimé ou false
      */
     async deleteQuizz(id_quizz){
@@ -201,7 +201,7 @@ class Quizz {
 
     /**
      * Ajoute un quizz à la db
-     * @param {*} body tous les composants d'un quizz
+     * @param {object} body tous les composants d'un quizz
      * @returns l'id du nouveau quizz
      */
     async addQuizz(body){
