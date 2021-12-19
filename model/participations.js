@@ -7,6 +7,11 @@ class Participations {
 
     }
 
+    /**
+     * Add an answer from the user in the participation_answer table and returns the added answer
+     * @param {object} body - it contains all required data to create the answer
+     * @returns {object} the answer that was created (with id)
+     */
     async addOneAnswer(body){// id_participation, id_answer
         const res = await db.query('SELECT * FROM participation_answers WHERE id_answer=$1 AND id_participation=$2',[body.id_answer,body.id_participation]);
         if(res.rows[0])return;
@@ -66,6 +71,12 @@ class Participations {
         }
     }
 
+
+    /**
+     * Return score of a try
+     * @param {object} body - it contains all required data to get the score
+     * @returns {object} the score
+     */
     async getScore(id_quizz,id_user,nb_try) {
         if(id_participation===undefined || nb_try === undefined){
             return false;
@@ -76,6 +87,11 @@ class Participations {
         }
     }
 
+    /**
+     * Return the 3 last score of a user from a quizz
+     * @param {object} body - it contains all required data to get the score
+     * @returns {object} the scores
+     */
     async getBestPersonalsScores(id_quizz,id_user){
         if(id_quizz===undefined,id_user===undefined){
             return false;
@@ -86,6 +102,12 @@ class Participations {
         }
     }
 
+
+    /**
+     * Return the 3 best scores of a quizz
+     * @param {object} body - it contains all required data to get the score
+     * @returns {object} the scores
+     */
     async getBestScores(id_quizz){
         if(id_quizz===undefined){
             return false;
