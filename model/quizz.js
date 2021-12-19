@@ -12,6 +12,12 @@ const answerModel = new Answers();
 
 class Quizz {
 
+    /**
+     * Savoir si un quizz est liké par un certain user
+     * @param {*} id_quizz l'id du quizz
+     * @param {*} id_user l'id de l'user
+     * @returns un objet like 
+     */
     async isLike(id_quizz,id_user){
         if(id_quizz===undefined || id_user===undefined)return;
 
@@ -30,6 +36,11 @@ class Quizz {
         return like;
     }
 
+    /**
+     * Supprime un like à un quizz
+     * @param {*} body l'id quizz et l'id_user
+     * @returns un objet like 
+     */
     async unlike(body){
         const res = await db.query('SELECT l.id_quizz, l.id_user \
                                     FROM likes l \
@@ -48,6 +59,11 @@ class Quizz {
         return newLike;
     }
 
+    /**
+     * Ajouter un like à un quizz
+     * @param {*} body l'id quizz et l'id_user
+     * @returns un objet like
+     */
     async like(body){
         const res = await db.query('SELECT l.id_quizz, l.id_user \
                                     FROM likes l \
@@ -66,6 +82,11 @@ class Quizz {
         return newLike;
     }
 
+    /**
+     * Va chercher le quizz correspondant à l'id en paramètre
+     * @param {*} id l'id du quizz
+     * @returns le quizz ou false si il n'existe pas
+     */
     async getQuizzById(id) {
         const { rows } = await db.query('SELECT q.id_quizz, q.name, q.id_creator, q.date, q.is_deleted, q.description, u.name as "username" \
                                          FROM quizz q, users u \
@@ -74,6 +95,11 @@ class Quizz {
         return rows[0];
     }
 
+    /**
+     * Va chercher les quizz du créateur correspondant à l'id en paramètre
+     * @param {*} id l'id du créateur
+     * @returns les quizz du créateur ou false
+     */
     async getQuizzByUser(id){
         const { rows } = await db.query('SELECT q.id_quizz, q.name, q.id_creator, q.date, q.is_deleted, q.description \
                                          FROM quizz q \
@@ -82,6 +108,10 @@ class Quizz {
         return rows;
     }
 
+    /**
+     * Va chercher 9 quizz aléatoire dans la db
+     * @returns 9 quizz
+     */
     async getQuizzExplorer(){
         const { rows } = await db.query('SELECT q.id_quizz, q.name, q.id_creator, q.date, q.is_deleted, q.description,u.name as user_name, random() \
                                          FROM quizz q, users u \
@@ -90,6 +120,12 @@ class Quizz {
         if(!rows) return false;
         return rows;
     }
+
+    /**
+     * Va chercher les quizz qui ont le critere qui apparait dans le nom ou l'auteur de celui-ci
+     * @param {*} critere ce que l'user veut rechercher
+     * @returns les quizz correspondant au critere ou false
+     */
     async getQuizzByCritere(critere){
         const { rows } = await db.query(`SELECT DISTINCT q.id_quizz, q.name, q.id_creator, q.date, q.is_deleted, q.description,u.name as user_name \ 
                                          FROM quizz q, users u \
@@ -99,6 +135,11 @@ class Quizz {
         return rows;
     }
 
+    /**
+     * Va chercher les quizz en abonnements de l'user qui a pour id le parametre
+     * @param {*} id id de l'user
+     * @returns les quizz en abonnements ou false
+     */
     async getQuizzAbonnements(id){
         const { rows } = await db.query('SELECT DISTINCT q.id_quizz, q.name, q.id_creator, q.date, q.is_deleted, q.description,u.name as user_name \
                                          FROM quizz q, users u, subscribers s \
@@ -108,6 +149,11 @@ class Quizz {
         return rows;
     }
 
+    /**
+     * Va chercher les quizz d'un user qui a pour email le parametre
+     * @param {*} email email de l'user
+     * @returns les quizz de l'user ou false
+     */
     async getQuizzByEmail(email){
         const { rows } = await db.query('SELECT q.id_quizz, q.name, q.id_creator, q.date, q.is_deleted, q.description \
                                          FROM quizz q, users u \
@@ -116,6 +162,10 @@ class Quizz {
         return rows;
     }
 
+    /**
+     * Va chercher les 6 quizz les plus likés
+     * @returns 6 quizz les plus likés ou false
+     */
     async get6MoreLikedQuizz(){
         const { rows } = await db.query('SELECT q.id_quizz, q.name, q.id_creator, q.date, q.is_deleted, q.description, u.name as user_name  \
                                          FROM quizz q, users u \
@@ -124,6 +174,11 @@ class Quizz {
         if(!rows) return false;
         return rows;
     }
+    /**
+     * Va chercher le nombre de like d'un quizz dont l'id est en paramètre
+     * @param {*} id_quizz l'id du quizz
+     * @returns les likes du quizz ou false
+     */
     async getNbLikes(id_quizz){
         const { rows } = await db.query('SELECT count(l.*) AS nblikes \
                                          FROM quizz q, likes l \
@@ -132,6 +187,11 @@ class Quizz {
         return rows;
     }
 
+    /**
+     * Va supprimer le quizz dont l'id est en paramètre
+     * @param {*} id_quizz l'id du quizz 
+     * @returns true si il a été supprimé ou false
+     */
     async deleteQuizz(id_quizz){
         const { rows } = await db.query('UPDATE quizz SET is_deleted=true WHERE id_quizz = $1',[id_quizz]);
         if(!rows) return false;
@@ -139,6 +199,11 @@ class Quizz {
         return true;
     }
 
+    /**
+     * Ajoute un quizz à la db
+     * @param {*} body tous les composants d'un quizz
+     * @returns l'id du nouveau quizz
+     */
     async addQuizz(body){
         let name = escape(body.name);
         let description = escape(body.description);
