@@ -40,7 +40,7 @@ router.post("/",authorize, async function (req, res) {
         !req.body ||
         !req.body.id_quizz ||
         !req.body.id_user ||
-        !req.body.score ||
+        req.body.score === undefined ||
         !req.body.difficulty
     )
         return res.sendStatus(400);
