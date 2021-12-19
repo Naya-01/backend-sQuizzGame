@@ -23,10 +23,9 @@ class User {
    * @returns {object} the resource that was created
    */
   async addUser(body) {
-    const hashedPassword = await bcrypt.hash(body.password, saltRounds);
-    console.log(body.name);
+    const hashedPassword = await bcrypt.hash(escape(body.password), saltRounds);
     db.query(
-      `INSERT INTO users (name,email,password) VALUES('${body.name}','${body.email}','${hashedPassword}')`
+      `INSERT INTO users (name,email,password) VALUES('${escape(body.name)}','${escape(body.email)}','${hashedPassword}')`
     );
     let user = {
       name: body.name,
@@ -136,10 +135,10 @@ class User {
    * @returns {object} some information from a user with his token
    */
   async login(body) {
-    const user = await this.getUserByEmailWithSubs(body.email);
+    const user = await this.getUserByEmailWithSubs(escape(body.email));
     if (!user) return;
     const hashPass = await bcrypt.hash(body.password, saltRounds);
-    const match = await bcrypt.compare(body.password, user.password);
+    const match = await bcrypt.compare(escape(body.password), user.password);
     if (!match) return;
 
     const authenticatedUser = {
@@ -170,14 +169,14 @@ class User {
    * @returns {object} some information from a user with his token
    */
   async register(body) {
-    let user = await this.getUserByEmailWithSubs(body.email);
+    let user = await this.getUserByEmailWithSubs(escape(body.email));
     if (user) {
       console.log("L'utilisateur existe déjà");
       return;
     }
 
     const newUser = await this.addUser(body);
-    user = await this.getUserByEmailWithSubs(body.email);
+    user = await this.getUserByEmailWithSubs(escape(body.email));
     if (newUser === undefined) return;
     const authenticatedUser = {
       id_user: user.id_user,
