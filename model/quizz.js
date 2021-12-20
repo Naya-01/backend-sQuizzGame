@@ -168,9 +168,9 @@ class Quizz {
      */
     async get6MoreLikedQuizz(){
         const { rows } = await db.query('SELECT q.id_quizz, q.name, q.id_creator, q.date, q.is_deleted, q.description, u.name as user_name  \
-                                         FROM quizz q, users u \
+                                         FROM quizz q, users u , likes l \
                                          WHERE u.banned=false AND q.is_deleted=false AND q.id_creator = u.id_user \
-                                         AND q.id_quizz IN (SELECT l.id_quizz FROM likes l GROUP BY l.id_quizz ORDER BY count(l.id_quizz) LIMIT 6)');
+                                         AND q.id_quizz = l.id_quizz GROUP BY q.id_quizz,u.name ORDER BY count(l.id_quizz) DESC LIMIT 6');
         if(!rows) return false;
         return rows;
     }

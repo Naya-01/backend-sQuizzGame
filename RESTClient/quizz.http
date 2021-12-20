@@ -17,9 +17,27 @@ Content-Type: application/json
   "password":"123"
 }
 
+### Login user
+# @name login
+POST http://localhost:3000/users/login
+Content-Type: application/json
+
+{
+  "email": "mehdiIPL@gmail.com",
+  "password":"aroufgangsta"
+}
+> {%
+ client.global.set("userToken", response.body.token);
+ %}
+
 ### See all quizz
 GET http://localhost:3000/quizz
 Authorization: {{login.response.body.token}}
+
+### Get quizz from ID
+
+GET http://localhost:3000/quizz/mostLiked/
+Authorization: {{userToken}}
 
 ### Get quizz from ID
 
